@@ -11,7 +11,6 @@ class Users extends Component {
 		this.addUser = this.addUser.bind(this);
 		this.showSignUpModal = this.showSignUpModal.bind(this);
 		this.closeSignUpModal = this.closeSignUpModal.bind(this);
-		// add stuff to open and close mdoal
 	}
 
 	showSignUpModal() {
@@ -44,18 +43,17 @@ class Users extends Component {
 	render() {
 		return (
 			<div>
-				<h1>Welcome to Crypto Game</h1>
 		          <div className="row">
 		            <div className="col-12 text-right">
 		              <button onClick={ this.showSignUpModal } ref="signup" className="btn btn-lg btn-default btn-block signup-button">Sign Up</button>
 		            </div>
 		          </div>
-		          { this.state.showSignUpModal ? <SignUpModal banana={ this.addUser } close={ this.closeSignUpModal }/> : null }
+		          { this.state.showSignUpModal ? <SignUpModal myHistory={ this.props.history } banana={ this.addUser } close={ this.closeSignUpModal }/> : null }
 		          <br>
 		          </br>
 				<div>
 					{this.state.users.map((user) => {
-						return <li>Name: {user.name}, Balance: ${user.cash_balance} </li>
+						return <li>Name: {user.name}, Balance: ${user.cash_balance}</li>
 					}) }
 				</div>
 			</div>

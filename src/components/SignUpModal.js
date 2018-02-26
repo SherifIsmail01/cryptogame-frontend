@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import UserProfile from './UserProfile';
+
 
 class SignUpModal extends Component {
 	constructor() {
@@ -9,18 +11,21 @@ class SignUpModal extends Component {
 
 	newUser(e) {
 		e.preventDefault();
-
+		console.log(this.refs.signup.value);
+		var name = this.refs.signup.value
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users`, {
 			method: "POST",
+			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({ 
-				name: this.refs.signup.value
+				name: name
 			})
 			}).then((res) => {
 				return res.json()
 			}).then((user) => {
 				console.log(user)
 				this.props.banana(user);
-				// JSON.stringify(user)
+				this.props.myHistory.push("/users/" + user.id)
+				// return (<Link  to={"/users/" + user.id}></Link>)
 		});
 	}
 
