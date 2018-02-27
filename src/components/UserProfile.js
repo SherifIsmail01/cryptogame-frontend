@@ -54,6 +54,7 @@ class UserProfile extends Component {
 	}
 
 	setUpdatedUser(updatedUser) {
+		console.log(updatedUser)
 		this.setState({
 			user: updatedUser
 		})
@@ -158,12 +159,13 @@ class UserProfile extends Component {
 			}).then((user) => {
 				this.setState({user: user})
 		});
-		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.match.params.user_id}/accounts`, {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.match.params.user_id}`, {
 			method: "GET",
 			}).then((res) => {
 				return res.json()
 			}).then((accounts) => {
-				this.setState({userAccounts: accounts})
+				console.log(accounts)
+				this.setState({userAccounts: accounts.accounts})
 		});
 	}
 

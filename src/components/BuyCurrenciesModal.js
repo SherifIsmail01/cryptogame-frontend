@@ -7,6 +7,7 @@ class BuyCurrenciesModal extends Component {
 		this.buyCurrencies = this.buyCurrencies.bind(this);
 		this.state = {
 			accounts: [],
+			cash_balance: null,
 			buy: null
 		}
 		this.onChangeBuyCurrency = this.onChangeBuyCurrency.bind(this);
@@ -34,7 +35,12 @@ class BuyCurrenciesModal extends Component {
 			}).then((res) => {
 				return res.json()
 			}).then((newAccounts) => {
+				console.log(newAccounts);
 				this.props.accountsAfterPurchase(newAccounts)
+
+				this.setState({
+					cash_balance: newAccounts.cash_balance
+				})
 		})
 	}
 

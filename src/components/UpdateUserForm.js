@@ -28,7 +28,8 @@ class UpdateUserForm extends Component {
 			}).then((res) => {
 				return res.json()
 			}).then((updatedUser) => {
-				this.props.update(updatedUser)
+				console.log(updatedUser)
+				this.props.update(updatedUser.name)
 		});
 	}
 
