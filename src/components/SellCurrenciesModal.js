@@ -20,21 +20,13 @@ class SellCurrenciesModal extends Component {
 
 	sellCurrencies(e) {
 		e.preventDefault();
-		console.log ({
-				Bitcoin: 2000,
-				Litecoin: 100,
-				Etherium: 400,
-				currency_to_sell: this.state.sell,
-				num_of_units: this.refs.numberOfUnits.value,
-				sold_for: "Cash"
-			});
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userId}/accounts/sell`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
-				Bitcoin: 2000,
-				Litecoin: 100,
-				Etherium: 400,
+				Bitcoin: 10703.9675,
+				Litecoin: 220.755,
+				Etherium: 886.96,
 				currency_to_sell: this.state.sell,
 				num_of_units: this.refs.numberOfUnits.value,
 				sold_for: "Cash"
@@ -42,7 +34,6 @@ class SellCurrenciesModal extends Component {
 			}).then((res) => {
 				return res.json()
 			}).then((updatedAccounts) => {
-				console.log(updatedAccounts)
 				this.props.accountsAfterSale(updatedAccounts);
 		});
 	}
@@ -59,19 +50,16 @@ class SellCurrenciesModal extends Component {
 	               		<form onSubmit= {this.sellCurrencies}>
 	               			<div>
 	               			Select Currency to sell:
-	               			<br>
-	               			</br>
+	               			<br/>
 	             			<input onChange={this.onChangeSellCurrency} type="radio" name="currency" value="Bitcoin" className="btn btn-lg btn-block" />Bitcoin
-	             			<br>
-	             			</br>
+	             			<br/>
 	             			<input onChange={this.onChangeSellCurrency} type="radio" name="currency" value="Litecoin" className="btn btn-lg btn-block" />Litecoin
-	             			<br>
-	             			</br>
+	             			<br/>
 	             			<input onChange={this.onChangeSellCurrency} type="radio" name="currency" value="Etherium" className="btn btn-lg btn-block" />Etherium
 	             			</div>
 	             			<div>
 	             			Number of units:  				
-				          	<input ref="numberOfUnits" type="text" placeholder="number of units" />
+				          	<input ref="numberOfUnits" type="text"/>
 				          	</div>
 				          	<div>
 				          	Sell for: Cash
@@ -83,6 +71,7 @@ class SellCurrenciesModal extends Component {
 				        </form>
 	              </div>
 	              <div className="modal-footer">
+	              	<button type="button" className="btn btn-danger" onClick= {this.props.close}>Close</button>
 	              </div>
 	            </div>
 	          </div>

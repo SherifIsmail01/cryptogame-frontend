@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import UserProfile from './UserProfile';
 
 
 
@@ -11,15 +13,18 @@ class SignInModal extends Component {
 		}
 		this.onChangeEmailInput = this.onChangeEmailInput.bind(this);
 		this.onChangePasswordInput = this.onChangePasswordInput.bind(this);
+		this.logIn = this.logIn.bind(this);
 	}
 
 	onChangeEmailInput(e) {
+		console.log(this.state.email)
 		this.setState({
 			email: e.target.value 
 		})
 	}
 
 	onChangePasswordInput(e) {
+		console.log(this.state.password)
 		this.setState({
 			password: e.target.value
 		})
@@ -27,8 +32,10 @@ class SignInModal extends Component {
 
 	logIn(e) {
 		e.preventDefault();
+		console.log(this.state.email);
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/sessions.json`, {
 			method: "POST",
+			credentials: "include",
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
 				email: this.state.email,
@@ -38,7 +45,7 @@ class SignInModal extends Component {
 				return res.json()
 			}).then((user) => {
 				this.props.signIn(user)
-				this.props.myHistory.push("/users/" + this.state.user.id)
+				this.props.appHistory.push("/users/")
 		});
 	}
 
@@ -48,12 +55,12 @@ class SignInModal extends Component {
 	          <div className="modal-dialog" role="document">
 	            <div className="modal-content">
 	              <div className="modal-header">
-	                <h5 className="modal-title" id="SignUpModalLabel"></h5>
+	                <h5 className="modal-title" id="SignInModalLabel"></h5>
 	              </div>
 	              <div className="modal-body modal-dialog modal-lg">
-	               		<form onSubmit= {this.logIn } >
-				          <input onChange={this.onChangeEmailInput} type="email" value = {this.state.email} placeholder="email" />
-				          <input onChange={this.onChangePasswordInput} type="password" value = {this.state.password} placeholder="password" />  
+	               		<form onSubmit={this.logIn} >
+				          <input onChange={this.onChangeEmailInput} type="email" value={this.state.email} placeholder="email"/>
+				          <input onChange={this.onChangePasswordInput} type="password" value={this.state.password} placeholder="password"/>  
 				        	<br>
 				        	</br>
 				          <button type="submit" className="btn btn-success" >Login</button>

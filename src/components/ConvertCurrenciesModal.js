@@ -27,14 +27,13 @@ class ConvertCurrenciesModal extends Component {
 
 	convertCurrencies(e) {
 		e.preventDefault();
-		console.log();
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userId}/accounts/convert`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
-				Bitcoin: 2000,
-				Litecoin: 100,
-				Etherium: 400,
+				Bitcoin: 10703.9675,
+				Litecoin: 220.755,
+				Etherium: 886.96,
 				convert_from_currency: this.state.convertFrom,
 				num_of_units_of_converted_from_currency: this.refs.numberOfUnitsOfConvertedFromCurrency.value,
 				convert_to_currency: this.state.convertTo
@@ -42,7 +41,6 @@ class ConvertCurrenciesModal extends Component {
 			}).then((res) => {
 				return res.json()
 			}).then((convertedAccounts) => {
-				console.log(convertedAccounts)
 				this.props.accountsAfterConversion(convertedAccounts);
 		});
 	}
@@ -59,41 +57,34 @@ class ConvertCurrenciesModal extends Component {
 	               		<form onSubmit= {this.convertCurrencies}>
 	               			<div>
 	               			Convert from:
-	               			<br>
-	               			</br>
+	               			<br/>
 	     	             	<input onChange={this.onChangeConvertedFromCurrency} type="radio" name="convertFrom" value="Bitcoin" className="btn btn-lg btn-block" />Bitcoin
-	             			<br>
-	             			</br>
+	             			<br/>
 	             			<input onChange={this.onChangeConvertedFromCurrency} type="radio" name="convertFrom" value="Litecoin" className="btn btn-lg btn-block" />Litecoin
-	             			<br>
-	             			</br>
+	             			<br/>
 	             			<input onChange={this.onChangeConvertedFromCurrency} type="radio" name="convertFrom" value="Etherium" className="btn btn-lg btn-block" />Etherium
 	             			</div>
 	             			<div>
 	             			Number of units to convert: 				
-				          	<input ref="numberOfUnitsOfConvertedFromCurrency" type="text" placeholder="number of units" />
+				          	<input ref="numberOfUnitsOfConvertedFromCurrency" type="text"/>
 				          	</div>
 				          	<div>
-				          	<br>
-	             			</br>
+				          	<br/>
 				          	Convert to:
-				          	<br>
-	               			</br>
+				          	<br/>
 				          	<input onChange={this.onChangeConvertedToCurrency} type="radio" name="convertTo" value="Bitcoin"  className="btn btn-lg btn-block" />Bitcoin
-				          	<br>
-				          	</br>
+				          	<br/>
 	             			<input onChange={this.onChangeConvertedToCurrency} type="radio" name="convertTo" value="Litecoin"  className="btn btn-lg btn-block" />Litecoin
-	             			<br>
-	             			</br>
+	             			<br/>
 	             			<input onChange={this.onChangeConvertedToCurrency} type="radio" name="convertTo" value="Etherium"  className="btn btn-lg btn-block" />Etherium
-	             			<br>
-	             			</br>
+	             			<br/>
 	             			<button type="submit" className="btn btn-success" >Convert</button>
 	             			<button type="button" className="btn btn-danger" onClick= {this.props.close}>Cancel</button>
 	             			</div>
 				        </form>
 	              </div>
 	              <div className="modal-footer">
+	              	<button type="button" className="btn btn-danger" onClick= {this.props.close}>Close</button>
 	              </div>
 	            </div>
 	          </div>

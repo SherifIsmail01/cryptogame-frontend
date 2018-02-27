@@ -1,21 +1,13 @@
 .App {
-  
+  text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
+.App-title {
   text-align: center;
   background-color: #222;
   height: 120px;
   padding: 20px;
   color: white;
-}
-
-.App-title {
   font-size: 1.5em;
 }
 
@@ -23,40 +15,8 @@
   font-size: large;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 .container {
   margin-left: 20px;
-}
-.signup {
-  position: absolute;
-  right: 50px;
-  top: 160px;
-  width: 90px;
-}
-
-.signup-button {
-  padding: 3px;
-  font-size: 19px;
-  border-radius: 10px;
-  width: 120px;
-}
-
-.signin {
-  position: absolute;
-  right: 50px;
-  top: 200px;
-  width: 90px;
-}
-
-.signin-button {
-  padding: 3px;
-  font-size: 20px;
-  border-radius: 10px;
-  width: 120px;
 }
 
 .buycurrencies {
@@ -95,16 +55,16 @@
 }
 
 .modal {
-    padding: 0px;
+    padding: 5px;
     margin-top: 60px;
     margin-bottom: 0px;
     margin-left: 0px;
     display: block;
     position: absolute;
-    font-size: 10px;
+    font-size: 13px;
     left: 50%;
-    height: 90%;
-    width: 60%;
+    height: 80%;
+    width: 50%;
     border-radius: 5px;
 }
 
@@ -124,5 +84,33 @@
 .usercomponent {
   padding-bottom: 20px;
   margin-bottom: 20px;
-  bottom: 10px;
+}
+
+.homepage-button {
+  position: absolute;
+  right: 3%;
+  margin-top: 38px;
+}
+
+.chart {
+  margin-bottom: 80px;
+}
+
+.signup-button {
+  vertical-align: 10px;
+  margin-left: 1100px;
+  margin-top: 0px;
+}
+
+.updateetherium-button {
+  margin-bottom: 100px;
+}
+
+.updateuser-button {
+  margin-right: 0px;
+  margin-top: 0px;
+}
+.deleteuser-button {
+  margin-right: 0px;
+  margin-top: 0px;
 }

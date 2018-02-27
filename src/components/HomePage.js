@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ReactHighCharts from 'react-highcharts';
 import Users from './Users';
-import SignInModal from './SignInModal';
 import SignUpModal from './SignUpModal';
 
 
@@ -11,39 +10,59 @@ class HomePage extends Component {
 	constructor() {
 		super();
 		this.state = {
-			newUser: '',
+			users: '',
+			showSignUpModal: false,
 			accountsTransactions: []
 		}
+		this.showSignUpModal = this.showSignUpModal.bind(this);
+		this.closeSignUpModal = this.closeSignUpModal.bind(this);
+		this.addUser = this.addUser.bind(this);
 	}
 
-	
+	showSignUpModal() {
+		this.setState({
+			showSignUpModal: true
+		})
+	}
+	closeSignUpModal() {
+		this.setState({
+			showSignUpModal: false
+		})
+	}
+
+	addUser(user) {
+		this.setState({
+			users: this.state.users.concat(user)
+		})
+	}
+
 	componentDidMount() {
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/accounts.json`, {
 			method: "GET"
 			}).then((res) => {
 				return res.json()
 			}).then((accounts) => {
-				console.log(accounts)
 				this.setState({accountsTransactions: accounts})
 		});
 	}
 
 
 	render() {
-		let arr = []
-		let times =  this.state.accountsTransactions.map((account) => {
-						let transactionTime = account.updated_at.slice(0, 10)
-						  return transactionTime }) 
-		// let time = [times.map((time) => {return time})]
 		return (
 			<div>
 				<h1>Welcome to Crypto Game</h1>
-				    <div>
-				    	Transaction Times: {this.state.accountsTransactions.map((account) => {
-						let transactionTime = account.updated_at
-						  return transactionTime })}
-				    </div>
+				    <div className="row">
+			            <div className="col-12 signup">	
+			              	<button onClick={ this.showSignUpModal } ref="signup" className="btn btn-outline-secondary btn-md btn-default signup-button">Sign Up</button>
+			            </div>
+			      	</div>
+			          { this.state.showSignUpModal ? <SignUpModal myHistory={ this.props.history } signUp={ this.addUser } close={ this.closeSignUpModal }/> : null }
+			         <br />
+				    <div className="chart">
 					<ReactHighCharts config = { {
+									title: {
+										text: 'Trading Transactions'
+									},
 							        xAxis: {
 							        	type: 'datetime',
 							        	dateTimelabelFormats: {
@@ -74,8 +93,6 @@ class HomePage extends Component {
 							        }]
 								} } ref="chart">
 					</ReactHighCharts>
-					<div className="usercomponent">
-						<Users />
 					</div>
 			</div>
 		)

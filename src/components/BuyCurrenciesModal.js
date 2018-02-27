@@ -21,28 +21,19 @@ class BuyCurrenciesModal extends Component {
 	
 	buyCurrencies(e) {
 		e.preventDefault();
-		console.log({
-				Bitcoin: 2000,
-				Litecoin: 100,
-				Etherium: 400,
-				currency_to_buy: this.state.buy,
-				num_of_units: this.refs.numberOfUnits.value,
-				payment_type: "Cash"
-			});
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userId}/accounts/buy`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
-				Bitcoin: 2000,
-				Litecoin: 100,
-				Etherium: 400,
+				Bitcoin: 10703.9675,
+				Litecoin: 220.755,
+				Etherium: 886.96,
 				currency_to_buy: this.state.buy,
 				num_of_units: this.refs.numberOfUnits.value
 			})
 			}).then((res) => {
 				return res.json()
 			}).then((newAccounts) => {
-				console.log(newAccounts)
 				this.props.accountsAfterPurchase(newAccounts)
 		})
 	}
@@ -56,35 +47,31 @@ class BuyCurrenciesModal extends Component {
 	                <h5 className="modal-title" id="BuyCurrenciesModalLabel">Buy Currencies</h5>
 	              </div>
 	              <div className="modal-body">
-	               		<form onSubmit= {this.buyCurrencies}>
+	               		<form onSubmit= {this.buyCurrencies} >
 	               			<div>
 	               			Type Of Currency:
-	               			<br>
-	               			</br>
+	               			<br/>
 	             			<input onChange={this.onChangeBuyCurrency} type="radio" name="currency" value="Bitcoin" className="btn btn-lg btn-block" />Bitcoin
-	             			<br>
-	             			</br>
+	             			<br/>
 	             			<input onChange={this.onChangeBuyCurrency} type="radio" name="currency" value="Litecoin" className="btn btn-lg btn-block" />Litecoin
-	             			<br>
-	             			</br>
+	             			<br/>
 	             			<input onChange={this.onChangeBuyCurrency} type="radio" name="currency" value="Etherium" className="btn btn-lg btn-block" />Etherium
 	             			</div>
 	             			Number of units:  				
-				          	<input ref="numberOfUnits" type="text" placeholder="number of units" />
-				          	<br>
-				          	</br>
+				          	<input ref="numberOfUnits" type="text" />
+				          	<br/>
 				          	<div>
 				          	Pay with: Cash
 	             			</div>
 	             			<div>
-	             			<br>
-	             			</br>
+	             			<br/>
 	             			<button type="submit" className="btn btn-success" >Buy</button>
 	             			<button type="button" className="btn btn-danger" onClick= {this.props.close}>Cancel</button>
 	             			</div>
 				        </form>
 	              </div>
 	              <div className="modal-footer">
+	              	<button type="button" className="btn btn-danger" onClick= {this.props.close}>Close</button>
 	              </div>
 	            </div>
 	          </div>
