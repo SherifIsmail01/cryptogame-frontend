@@ -10,7 +10,7 @@
 .App-header {
   text-align: center;
   background-color: #222;
-  height: 150px;
+  height: 120px;
   padding: 20px;
   color: white;
 }
@@ -28,10 +28,101 @@
   to { transform: rotate(360deg); }
 }
 
-.btn {
-  min-width:250px;
-}
 .container {
   margin-left: 20px;
 }
+.signup {
+  position: absolute;
+  right: 50px;
+  top: 160px;
+  width: 90px;
+}
 
+.signup-button {
+  padding: 3px;
+  font-size: 19px;
+  border-radius: 10px;
+  width: 120px;
+}
+
+.signin {
+  position: absolute;
+  right: 50px;
+  top: 200px;
+  width: 90px;
+}
+
+.signin-button {
+  padding: 3px;
+  font-size: 20px;
+  border-radius: 10px;
+  width: 120px;
+}
+
+.buycurrencies {
+  position: absolute;
+  top: 200px;
+  right: 50px;
+}
+
+.sellcurrencies {
+  position: absolute;
+  top: 250px;
+  right: 50px;
+}
+
+.convertcurrencies {
+  position: absolute;
+  top: 300px;
+  right: 50px;
+}
+
+.buycurrencies-button {
+  padding: 5px;
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+.sellcurrencies-button {
+  padding: 5px;
+  font-size: 20px;
+  border-radius: 5px;
+}
+.convertcurrencies-button {
+  padding: 5px;
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+.modal {
+    padding: 0px;
+    margin-top: 60px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    display: block;
+    position: absolute;
+    font-size: 10px;
+    left: 50%;
+    height: 90%;
+    width: 60%;
+    border-radius: 5px;
+}
+
+.App-footer {
+  position: fixed;
+  flex:0.1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  flex: row;
+  text-align: center;
+  color: white;
+  height: 60px;
+}
+
+.usercomponent {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  bottom: 10px;
+}

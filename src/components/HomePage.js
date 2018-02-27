@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ReactHighCharts from 'react-highcharts';
 import Users from './Users';
+import SignInModal from './SignInModal';
 import SignUpModal from './SignUpModal';
 
 
@@ -11,7 +12,7 @@ class HomePage extends Component {
 		super();
 		this.state = {
 			newUser: '',
-			accounts: []
+			accountsTransactions: []
 		}
 	}
 
@@ -23,23 +24,24 @@ class HomePage extends Component {
 				return res.json()
 			}).then((accounts) => {
 				console.log(accounts)
-				this.setState({accounts: accounts})
+				this.setState({accountsTransactions: accounts})
 		});
 	}
 
 
 	render() {
 		let arr = []
-		let times =  this.state.accounts.map((account) => {
-						let accountTime = account.updated_at.slice(0, 10)
-						  return accountTime }) 
+		let times =  this.state.accountsTransactions.map((account) => {
+						let transactionTime = account.updated_at.slice(0, 10)
+						  return transactionTime }) 
 		// let time = [times.map((time) => {return time})]
 		return (
 			<div>
 				<h1>Welcome to Crypto Game</h1>
-				    <Users addedUser = {this.state.newUser}/>
 				    <div>
-				    	{times}
+				    	Transaction Times: {this.state.accountsTransactions.map((account) => {
+						let transactionTime = account.updated_at
+						  return transactionTime })}
 				    </div>
 					<ReactHighCharts config = { {
 							        xAxis: {
@@ -72,6 +74,9 @@ class HomePage extends Component {
 							        }]
 								} } ref="chart">
 					</ReactHighCharts>
+					<div className="usercomponent">
+						<Users />
+					</div>
 			</div>
 		)
 	}

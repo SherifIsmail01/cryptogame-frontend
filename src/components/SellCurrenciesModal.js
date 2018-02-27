@@ -49,7 +49,7 @@ class SellCurrenciesModal extends Component {
 
 	render() {
 		return (
-			<div className="modal fade show" style={{display: 'block'}}>
+			<div className="modal fade show modal-lg">
 	          <div className="modal-dialog" role="document">
 	            <div className="modal-content">
 	              <div className="modal-header">
