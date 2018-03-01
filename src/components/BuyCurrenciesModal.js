@@ -21,7 +21,6 @@ class BuyCurrenciesModal extends Component {
 	}
 	
 	buyCurrencies(e) {
-		e.preventDefault();
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userId}/accounts/buy`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},
@@ -35,12 +34,14 @@ class BuyCurrenciesModal extends Component {
 			}).then((res) => {
 				return res.json()
 			}).then((newAccounts) => {
+				// console.log(total_price_of_purchase)
 				console.log(newAccounts);
-				this.props.accountsAfterPurchase(newAccounts)
 
 				this.setState({
 					cash_balance: newAccounts.cash_balance
 				})
+				this.props.accountsAfterPurchase(newAccounts)
+				console.log(this.state.cash_balance)
 		})
 	}
 

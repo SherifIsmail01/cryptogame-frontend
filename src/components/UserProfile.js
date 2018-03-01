@@ -61,11 +61,11 @@ class UserProfile extends Component {
 	}
 
 	deleteUser(e) {
-		e.preventDefault();
-		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.match.params.user_id}`, {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.match.params.user_id}`, 
+		{
 			method: "DELETE",
 			}).then((res) => {
-				return res.json()
+				this.props.history.push('/');
 			})
 	}
 
@@ -115,7 +115,6 @@ class UserProfile extends Component {
 				 	currentBitcoinPrice: data.bpi.USD.rate_float
 				}) 
 			}
-
 		});
 	}
 
@@ -157,15 +156,20 @@ class UserProfile extends Component {
 			}).then((res) => {
 				return res.json()
 			}).then((user) => {
-				this.setState({user: user})
+				this.setState({
+					user: user,
+					cash_balance: user.cash_balance
+				})
 		});
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.match.params.user_id}`, {
 			method: "GET",
 			}).then((res) => {
 				return res.json()
 			}).then((accounts) => {
-				console.log(accounts)
-				this.setState({userAccounts: accounts.accounts})
+				this.setState({
+					userAccounts: accounts.accounts,
+					cash_balance: accounts.cash_balance
+				})
 		});
 	}
 
@@ -196,20 +200,20 @@ class UserProfile extends Component {
 						</div>
 						<br />
 						<div>
-						Update Bitcoin Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentBitcoinPrice) * (this.state.userAccounts[0].units_of_currency))} 			
+						Update Bitcoin Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentBitcoinPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Bitcoin'})[0].units_of_currency))} 			
 							<div className="updatebitcoin">
 								 <button onClick= {this.updateBitcoinValue} ref="updatebitcoin" className="btn btn-outline-info btn-lg btn-default updatebitcoin-button">Update Bitcoin Value</button>
 							</div>
 								Powered By: <Link to={"https://www.coindesk.com/price/"} target="_blank">CoinDesk</Link>
 						</div>
 						<div>
-						Update Litecoin Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentLitecoinPrice) * (this.state.userAccounts[2].units_of_currency))} 			
+						Update Litecoin Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentLitecoinPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Litecoin'})[0].units_of_currency))} 			
 							<div className="updatelitecoin">
 								 <button onClick= {this.updateLitecoinValue} ref="updatelitecoin" className="btn btn-outline-info btn-lg btn-default updatelitecoin-button">Update Litecoin Value</button>
 							</div>
 						</div>
 						<div>
-						Update Etherium Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentEtheriumPrice) * (this.state.userAccounts[1].units_of_currency))} 			
+						Update Etherium Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentEtheriumPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Etherium'})[0].units_of_currency))} 			
 							<div className="updateetherium">
 								 <button onClick= {this.updateEtheriumValue} ref="updateetherium" className="btn btn-outline-info btn-lg btn-default updateetherium-button">Update Etherium Value</button>
 							</div>

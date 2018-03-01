@@ -26,7 +26,6 @@ class ConvertCurrenciesModal extends Component {
 	}
 
 	convertCurrencies(e) {
-		e.preventDefault();
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userId}/accounts/convert`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},

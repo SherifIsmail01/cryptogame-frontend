@@ -19,7 +19,6 @@ class SellCurrenciesModal extends Component {
 	}
 
 	sellCurrencies(e) {
-		e.preventDefault();
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userId}/accounts/sell`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},
