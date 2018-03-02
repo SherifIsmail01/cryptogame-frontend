@@ -49,19 +49,9 @@ class HomePage extends Component {
 
 
 	render() {
-		var times = this.state.accountsTransactions.map((account) => {
-			return account.updated_at
-		})
-		let splitedTimes = times
-		console.log(splitedTimes)
-		let allTimes = splitedTimes.map((time) => {
-			return time.slice(0, 10)
-		})
-		// let updatedTimes = splitedTimes.splice(0, 10)
 		return (
 			<div>
 				<h1>Welcome to Crypto Game</h1>
-					{allTimes.join('')}
 				    <div className="row">
 			            <div className="col-12 signup">	
 			              	<button onClick={ this.showSignUpModal } ref="signup" className="btn btn-outline-secondary btn-md btn-default signup-button">Sign Up</button>

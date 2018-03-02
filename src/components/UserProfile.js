@@ -4,6 +4,7 @@ import SellCurrenciesModal from './SellCurrenciesModal';
 import ConvertCurrenciesModal from './ConvertCurrenciesModal';
 import UpdateUserForm from './UpdateUserForm';
 import $ from 'jquery';
+import { Card, Button, CardTitle, CardText } from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
 
 
@@ -39,6 +40,11 @@ class UserProfile extends Component {
 		this.setState({
 			userAccounts: accounts
 		})
+		console.log(this.state.userAccounts)
+	}
+
+	errorMessage() {
+
 	}
 
 	showUpdateUserForm() {
@@ -158,22 +164,17 @@ class UserProfile extends Component {
 			}).then((user) => {
 				this.setState({
 					user: user,
-					cash_balance: user.cash_balance
+					cash_balance: user.cash_balance,
+					userAccounts: user.accounts
 				})
-		});
-		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.match.params.user_id}`, {
-			method: "GET",
-			}).then((res) => {
-				return res.json()
-			}).then((accounts) => {
-				this.setState({
-					userAccounts: accounts.accounts,
-					cash_balance: accounts.cash_balance
-				})
+				console.log(this.state.user)
+				console.log(this.state.user.cash_balance)
+				console.log(this.state.userAccounts)
 		});
 	}
 
 	render() {
+		console.log(this.state.userAccounts)
 		return (
 			<div className="container-fluid ">
 				<div className="row ">
@@ -194,8 +195,14 @@ class UserProfile extends Component {
 						<br />
 						<div>
 							Accounts: {this.state.userAccounts.map((account) => {
-								return <li>Currency: {account.currency_name}, 
-								Number of Units: {account.units_of_currency}</li>
+								return 	<div>
+										<Card body inverse color="info">
+											<CardTitle>{account.currency_name}</CardTitle>
+											<br/>
+									        <CardText>Number of Units: {account.units_of_currency}</CardText>
+								      	</Card>
+								      	<br/>
+								      	</div>
 							})}
 						</div>
 						<br />
@@ -218,20 +225,21 @@ class UserProfile extends Component {
 								 <button onClick= {this.updateEtheriumValue} ref="updateetherium" className="btn btn-outline-info btn-lg btn-default updateetherium-button">Update Etherium Value</button>
 							</div>
 						</div>
+
 					</div>
 					<div className="row currencies-buttons">
 						<div className="buycurrencies">
 							<button onClick={ this.showBuyCurrenciesModal } ref="buycurrencies" className="btn btn-lg btn-outline-secondary btn-default btn-block buycurrencies-button">Buy Currencies</button>
 						</div>
-							{ this.state.showBuyCurrenciesModal ? <BuyCurrenciesModal userId={this.props.match.params.user_id} accountsAfterPurchase = { this.setUserAccounts } close={ this.closeBuyCurrenciesModal }/> : null }
+							{ this.state.showBuyCurrenciesModal ? <BuyCurrenciesModal userIdBuying={this.props.match.params.user_id} accountsAfterPurchase = { this.setUserAccounts } close={ this.closeBuyCurrenciesModal }/> : null }
 						<div className="sellcurrencies">
 							<button onClick={ this.showSellCurrenciesModal } ref="sellcurrencies" className="btn btn-lg btn-outline-secondary btn-default btn-block sellcurrencies-button">Sell Currencies</button>
 						</div>
-							{ this.state.showSellCurrenciesModal ? <SellCurrenciesModal userId={this.props.match.params.user_id} accountsAfterSale={ this.setUserAccounts } close={ this.closeSellCurrenciesModal }/> : null }
+							{ this.state.showSellCurrenciesModal ? <SellCurrenciesModal userIdSelling={this.props.match.params.user_id} accountsAfterSale={ this.setUserAccounts } close={ this.closeSellCurrenciesModal }/> : null }
 						<div className="convertcurrencies">
 							<button onClick={ this.showConvertCurrenciesModal } ref="convertcurrencies" className="btn btn-lg btn-outline-secondary btn-default btn-block convertcurrencies-button">Convert Currencies</button>
 						</div>
-							{ this.state.showConvertCurrenciesModal ? <ConvertCurrenciesModal userId={this.props.match.params.user_id} accountsAfterConversion={ this.setUserAccounts } close={ this.closeConvertCurrenciesModal }/> : null }
+							{ this.state.showConvertCurrenciesModal ? <ConvertCurrenciesModal userIdConverting={this.props.match.params.user_id} accountsAfterConversion={ this.setUserAccounts } close={ this.closeConvertCurrenciesModal }/> : null }
 					</div>
 				</div>
 			</div>

@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
 class BuyCurrenciesModal extends Component {
 	constructor() {
 		super();
-		this.buyCurrencies = this.buyCurrencies.bind(this);
 		this.state = {
-			accounts: [],
-			cash_balance: null,
 			buy: null
 		}
 		this.onChangeBuyCurrency = this.onChangeBuyCurrency.bind(this);
+		this.buyCurrencies = this.buyCurrencies.bind(this);
 	}
 
 
@@ -21,7 +20,12 @@ class BuyCurrenciesModal extends Component {
 	}
 	
 	buyCurrencies(e) {
-		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userId}/accounts/buy`, {
+		console.log({
+				currency_to_buy: this.state.buy,
+				num_of_units: this.refs.numberOfUnits.value
+			})
+
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userIdBuying}/buy`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
@@ -32,23 +36,21 @@ class BuyCurrenciesModal extends Component {
 				num_of_units: this.refs.numberOfUnits.value
 			})
 			}).then((res) => {
+				console.log(res)
+				console.log(res.cash_balance)
 				return res.json()
-			}).then((newAccounts) => {
-				// console.log(total_price_of_purchase)
-				console.log(newAccounts);
-
-				this.setState({
-					cash_balance: newAccounts.cash_balance
-				})
-				this.props.accountsAfterPurchase(newAccounts)
+			}).then((user) => {
+				this.props.accountsAfterPurchase(user.accounts)
 				console.log(this.state.cash_balance)
+				console.log(user.accounts);
 		})
 	}
 
 	render() {
+		// let purchasePrice = num_of_units * currency_to_buy
 		return (
-			<div className="modal fade show">
-	          <div className="modal-dialog" role="document">
+			<div className="modal fade show" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	          <div className="modal-dialog modal-dialog-centered"  role="document">
 	            <div className="modal-content">
 	              <div className="modal-header">
 	                <h5 className="modal-title" id="BuyCurrenciesModalLabel">Buy Currencies</h5>
@@ -58,22 +60,23 @@ class BuyCurrenciesModal extends Component {
 	               			<div>
 	               			Type Of Currency:
 	               			<br/>
-	             			<input onChange={this.onChangeBuyCurrency} type="radio" name="currency" value="Bitcoin" className="btn btn-lg btn-block" />Bitcoin
+	             			<input onChange={this.onChangeBuyCurrency} type="radio" name="currency" value="Bitcoin"  />Bitcoin
 	             			<br/>
-	             			<input onChange={this.onChangeBuyCurrency} type="radio" name="currency" value="Litecoin" className="btn btn-lg btn-block" />Litecoin
+	             			<input onChange={this.onChangeBuyCurrency} type="radio" name="currency" value="Litecoin"  />Litecoin
 	             			<br/>
-	             			<input onChange={this.onChangeBuyCurrency} type="radio" name="currency" value="Etherium" className="btn btn-lg btn-block" />Etherium
+	             			<input onChange={this.onChangeBuyCurrency} type="radio" name="currency" value="Etherium"  />Etherium
 	             			</div>
+	             			<br/>
 	             			Number of units:  				
 				          	<input ref="numberOfUnits" type="text" />
-				          	<br/>
 				          	<div>
+				          	<br/>
 				          	Pay with: Cash
 	             			</div>
-	             			<div>
 	             			<br/>
-	             			<button type="submit" className="btn btn-success" >Buy</button>
-	             			<button type="button" className="btn btn-danger" onClick= {this.props.close}>Cancel</button>
+	             			<div>
+	             			<button color="primary" type="submit" className="btn btn-success" >Buy</button>
+	             			<button color="secondary" type="button" className="btn btn-danger" onClick= {this.props.close}>Cancel</button>
 	             			</div>
 				        </form>
 	              </div>

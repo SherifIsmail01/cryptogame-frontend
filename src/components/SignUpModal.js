@@ -7,7 +7,7 @@ class SignUpModal extends Component {
 	constructor() {
 		super();
 		this.state = {
-			name: ''
+			name: '',
 		}
 		this.newUser = this.newUser.bind(this);
 		this.onChangeNameInput = this.onChangeNameInput.bind(this);
@@ -25,7 +25,7 @@ class SignUpModal extends Component {
 			method: "POST",
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({ 
-				name: this.state.name
+				name: this.state.name,
 			})
 			}).then((res) => {
 				return res.json()
@@ -46,8 +46,7 @@ class SignUpModal extends Component {
 	              <div className="modal-body">
 	               		<form onSubmit= {this.newUser} >
 				          <input onChange={this.onChangeNameInput} type="name" value = {this.state.name} placeholder="name" />
-				          	<br>
-				          	</br>
+				          	<br/>
 				          <button type="submit" className="btn btn-success" >Submit</button>
 				          <button type="button" className="btn btn-lg btn-block" onClick={ this.props.close }>Close</button>
 				        </form>

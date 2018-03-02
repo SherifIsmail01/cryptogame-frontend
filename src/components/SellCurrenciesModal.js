@@ -19,7 +19,7 @@ class SellCurrenciesModal extends Component {
 	}
 
 	sellCurrencies(e) {
-		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userId}/accounts/sell`, {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userIdSelling}/sell`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
@@ -31,6 +31,7 @@ class SellCurrenciesModal extends Component {
 				sold_for: "Cash"
 			})			
 			}).then((res) => {
+				console.log(res)
 				return res.json()
 			}).then((updatedAccounts) => {
 				this.props.accountsAfterSale(updatedAccounts);

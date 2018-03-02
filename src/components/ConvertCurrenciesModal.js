@@ -26,7 +26,15 @@ class ConvertCurrenciesModal extends Component {
 	}
 
 	convertCurrencies(e) {
-		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userId}/accounts/convert`, {
+		console.log({
+				Bitcoin: 10703.9675,
+				Litecoin: 220.755,
+				Etherium: 886.96,
+				convert_from_currency: this.state.convertFrom,
+				num_of_units_of_converted_from_currency: this.refs.numberOfUnitsOfConvertedFromCurrency.value,
+				convert_to_currency: this.state.convertTo
+			})
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userIdConverting}/convert`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
@@ -38,8 +46,10 @@ class ConvertCurrenciesModal extends Component {
 				convert_to_currency: this.state.convertTo
 			})
 			}).then((res) => {
+				console.log(res)
 				return res.json()
 			}).then((convertedAccounts) => {
+				console.log(convertedAccounts)
 				this.props.accountsAfterConversion(convertedAccounts);
 		});
 	}
@@ -81,9 +91,6 @@ class ConvertCurrenciesModal extends Component {
 	             			<button type="button" className="btn btn-danger" onClick= {this.props.close}>Cancel</button>
 	             			</div>
 				        </form>
-	              </div>
-	              <div className="modal-footer">
-	              	<button type="button" className="btn btn-danger" onClick= {this.props.close}>Close</button>
 	              </div>
 	            </div>
 	          </div>
