@@ -37,3 +37,7 @@ Crypto game is a simple application that allow users to buy and sell cryptocurre
 
 ## Deployment Instructions
 * Please clone this project from the github link above. This project uses Node Package Manager to install packages and libraries like react. On the server side, it uses ruby bundle to install gems.
+
+## Installation
+* To install dependencies on the front end, run: `npm install`
+* To install dependencies on the back end, run: `bundle install`
