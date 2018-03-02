@@ -20,11 +20,11 @@ class BuyCurrenciesModal extends Component {
 	}
 	
 	buyCurrencies(e) {
+		e.preventDefault();
 		console.log({
 				currency_to_buy: this.state.buy,
 				num_of_units: this.refs.numberOfUnits.value
 			})
-
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userIdBuying}/buy`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},
@@ -36,14 +36,14 @@ class BuyCurrenciesModal extends Component {
 				num_of_units: this.refs.numberOfUnits.value
 			})
 			}).then((res) => {
-				console.log(res)
-				console.log(res.cash_balance)
-				return res.json()
-			}).then((user) => {
-				this.props.accountsAfterPurchase(user.accounts)
-				console.log(this.state.cash_balance)
-				console.log(user.accounts);
-		})
+				if (res.status === 200) {
+					 res.json().then((user) => {
+					 	console.log(user)
+				this.props.accountsAfterPurchase(e, user.accounts)})
+				} else {
+					alert("Insufficient Funds");
+				}
+			})
 	}
 
 	render() {
@@ -75,8 +75,8 @@ class BuyCurrenciesModal extends Component {
 	             			</div>
 	             			<br/>
 	             			<div>
-	             			<button color="primary" type="submit" className="btn btn-success" >Buy</button>
-	             			<button color="secondary" type="button" className="btn btn-danger" onClick= {this.props.close}>Cancel</button>
+	             			<button color="primary" type="submit" className="btn btn-success">Buy</button>
+	             			<button color="secondary" type="button" className="btn btn-danger" onClick={this.props.close}>Cancel</button>
 	             			</div>
 				        </form>
 	              </div>

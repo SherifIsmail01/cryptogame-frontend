@@ -13,6 +13,7 @@ class UserProfile extends Component {
 		super(props);
 		this.state = {
 			user: '',
+			cash_balance: 0,
 			userAccounts: [],
 			showBuyCurrenciesModal: false,
 			showSellCurrenciesModal: false,
@@ -36,15 +37,17 @@ class UserProfile extends Component {
 		this.updateEtheriumValue = this.updateEtheriumValue.bind(this);
 	}
 
-	setUserAccounts(accounts) {
+	setUserAccounts(e, accounts) {
+		e.preventDefault();
 		this.setState({
 			userAccounts: accounts
 		})
-		console.log(this.state.userAccounts)
 	}
 
-	errorMessage() {
 
+
+	errorMessage() {
+		"Insufficient Funds"
 	}
 
 	showUpdateUserForm() {
@@ -167,9 +170,6 @@ class UserProfile extends Component {
 					cash_balance: user.cash_balance,
 					userAccounts: user.accounts
 				})
-				console.log(this.state.user)
-				console.log(this.state.user.cash_balance)
-				console.log(this.state.userAccounts)
 		});
 	}
 
@@ -181,11 +181,11 @@ class UserProfile extends Component {
 					<div className="col-sm-6 col-2">
 						<div>
 						<h1>{this.state.user.name} Profile</h1>
-						Name:{this.state.user.name}, Cash Balance: ${this.state.user.cash_balance}
+						Name:{this.state.user.name}, Cash Balance: ${this.state.cash_balance}
 						</div>
 						<div className="row">
 				            <div className="col-12 updateuser">	
-				              	<button onClick={ this.showUpdateUserForm } ref="updateuser" className="btn btn-outline-secondary btn-md btn-default updateuser-button">update profile</button>
+				              	<button onClick={ this.showUpdateUserForm } ref="updateuser" className="btn btn-outline-secondary btn-md btn-default updateuser-button">Update Profile</button>
 				            </div>
 				          	{ this.state.showUpdateUserForm ? <UpdateUserForm userId={this.props.match.params.user_id} update={ this.setUpdatedUser } close={ this.closeUpdateUserForm }/> : null }
 				          	<div className="col-12 deleteuser">
@@ -231,7 +231,7 @@ class UserProfile extends Component {
 						<div className="buycurrencies">
 							<button onClick={ this.showBuyCurrenciesModal } ref="buycurrencies" className="btn btn-lg btn-outline-secondary btn-default btn-block buycurrencies-button">Buy Currencies</button>
 						</div>
-							{ this.state.showBuyCurrenciesModal ? <BuyCurrenciesModal userIdBuying={this.props.match.params.user_id} accountsAfterPurchase = { this.setUserAccounts } close={ this.closeBuyCurrenciesModal }/> : null }
+							{ this.state.showBuyCurrenciesModal ? <BuyCurrenciesModal userIdBuying={this.props.match.params.user_id} accountsAfterPurchase = { this.setUserAccounts } rejectedTransaction = {this.errorMessage} close={ this.closeBuyCurrenciesModal }/> : null }
 						<div className="sellcurrencies">
 							<button onClick={ this.showSellCurrenciesModal } ref="sellcurrencies" className="btn btn-lg btn-outline-secondary btn-default btn-block sellcurrencies-button">Sell Currencies</button>
 						</div>
