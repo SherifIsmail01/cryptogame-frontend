@@ -21,10 +21,6 @@ class BuyCurrenciesModal extends Component {
 	
 	buyCurrencies(e) {
 		e.preventDefault();
-		console.log({
-				currency_to_buy: this.state.buy,
-				num_of_units: this.refs.numberOfUnits.value
-			})
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userIdBuying}/buy`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},
@@ -36,18 +32,19 @@ class BuyCurrenciesModal extends Component {
 				num_of_units: this.refs.numberOfUnits.value
 			})
 			}).then((res) => {
+				console.log(res)
 				if (res.status === 200) {
-					 res.json().then((user) => {
-					 	console.log(user)
-				this.props.accountsAfterPurchase(e, user.accounts)})
+					 res.json().then((accounts) => {
+					 	console.log(accounts)
+				this.props.accountsAfterPurchase(accounts)})
 				} else {
+					e.preventDefault();
 					alert("Insufficient Funds");
 				}
-			})
+		})
 	}
 
 	render() {
-		// let purchasePrice = num_of_units * currency_to_buy
 		return (
 			<div className="modal fade show" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	          <div className="modal-dialog modal-dialog-centered"  role="document">

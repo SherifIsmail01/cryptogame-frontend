@@ -26,14 +26,7 @@ class ConvertCurrenciesModal extends Component {
 	}
 
 	convertCurrencies(e) {
-		console.log({
-				Bitcoin: 10703.9675,
-				Litecoin: 220.755,
-				Etherium: 886.96,
-				convert_from_currency: this.state.convertFrom,
-				num_of_units_of_converted_from_currency: this.refs.numberOfUnitsOfConvertedFromCurrency.value,
-				convert_to_currency: this.state.convertTo
-			})
+		e.preventDefault();
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userIdConverting}/convert`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},
@@ -47,11 +40,18 @@ class ConvertCurrenciesModal extends Component {
 			})
 			}).then((res) => {
 				console.log(res)
-				return res.json()
-			}).then((convertedAccounts) => {
-				console.log(convertedAccounts)
-				this.props.accountsAfterConversion(convertedAccounts);
-		});
+				if (res.status === 200) {
+					res.json().then((convertedAccounts) => {
+						console.log(convertedAccounts)
+				this.props.accountsAfterConversion(convertedAccounts)})
+				} else if (res.status === 400) {
+					e.preventDefault();
+					alert("Insufficient amount, please increase number of units or change currency");
+				} else {
+					e.preventDefault();
+					alert("Incorrect number of units");
+				}
+		})
 	}
 
 	render() {
@@ -91,6 +91,9 @@ class ConvertCurrenciesModal extends Component {
 	             			<button type="button" className="btn btn-danger" onClick= {this.props.close}>Cancel</button>
 	             			</div>
 				        </form>
+	              </div>
+	              <div className="modal-footer">
+	              	<button type="button" className="btn btn-danger" onClick= {this.props.close}>Close</button>
 	              </div>
 	            </div>
 	          </div>

@@ -35,19 +35,20 @@ class UserProfile extends Component {
 		this.updateBitcoinValue = this.updateBitcoinValue.bind(this);
 		this.updateLitecoinValue = this.updateLitecoinValue.bind(this);
 		this.updateEtheriumValue = this.updateEtheriumValue.bind(this);
+		this.updateCashBalance = this.updateCashBalance.bind(this);
+		this.deleteUser = this.deleteUser.bind(this);
 	}
 
-	setUserAccounts(e, accounts) {
-		e.preventDefault();
+	setUserAccounts(accounts) {
 		this.setState({
 			userAccounts: accounts
 		})
 	}
 
-
-
-	errorMessage() {
-		"Insufficient Funds"
+	updateCashBalance(cash_balance) {
+		this.setState({
+			cash_balance: cash_balance
+		})
 	}
 
 	showUpdateUserForm() {
@@ -70,8 +71,9 @@ class UserProfile extends Component {
 	}
 
 	deleteUser(e) {
+		e.preventDefault();
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.match.params.user_id}`, 
-		{
+			{
 			method: "DELETE",
 			}).then((res) => {
 				this.props.history.push('/');
@@ -173,8 +175,21 @@ class UserProfile extends Component {
 		});
 	}
 
+	componentWillUpdate() {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.match.params.user_id}`, {
+			method: "GET",
+			}).then((res) => {
+				return res.json()
+			}).then((user) => {
+				this.setState({
+					user: user,
+					cash_balance: user.cash_balance,
+					userAccounts: user.accounts
+				})
+		});
+	}
+
 	render() {
-		console.log(this.state.userAccounts)
 		return (
 			<div className="container-fluid ">
 				<div className="row ">
@@ -231,7 +246,7 @@ class UserProfile extends Component {
 						<div className="buycurrencies">
 							<button onClick={ this.showBuyCurrenciesModal } ref="buycurrencies" className="btn btn-lg btn-outline-secondary btn-default btn-block buycurrencies-button">Buy Currencies</button>
 						</div>
-							{ this.state.showBuyCurrenciesModal ? <BuyCurrenciesModal userIdBuying={this.props.match.params.user_id} accountsAfterPurchase = { this.setUserAccounts } rejectedTransaction = {this.errorMessage} close={ this.closeBuyCurrenciesModal }/> : null }
+							{ this.state.showBuyCurrenciesModal ? <BuyCurrenciesModal userIdBuying={this.props.match.params.user_id} accountsAfterPurchase = { this.setUserAccounts } cashBalanceAfterPurchase = {this.updateCashBalance} close={ this.closeBuyCurrenciesModal }/> : null }
 						<div className="sellcurrencies">
 							<button onClick={ this.showSellCurrenciesModal } ref="sellcurrencies" className="btn btn-lg btn-outline-secondary btn-default btn-block sellcurrencies-button">Sell Currencies</button>
 						</div>

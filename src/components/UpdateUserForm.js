@@ -18,6 +18,7 @@ class UpdateUserForm extends Component {
 	}
 
 	updateUser(e) {
+		e.preventDefault();
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userId}`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},

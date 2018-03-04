@@ -19,6 +19,7 @@ class SellCurrenciesModal extends Component {
 	}
 
 	sellCurrencies(e) {
+		e.preventDefault();
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.userIdSelling}/sell`, {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},
@@ -31,11 +32,14 @@ class SellCurrenciesModal extends Component {
 				sold_for: "Cash"
 			})			
 			}).then((res) => {
-				console.log(res)
-				return res.json()
-			}).then((updatedAccounts) => {
-				this.props.accountsAfterSale(updatedAccounts);
-		});
+				if (res.status === 200) {
+					 res.json().then((updatedAccounts) => {
+				this.props.accountsAfterSale(updatedAccounts)})
+				} else {
+					e.preventDefault();
+					alert("Incorrect number of units");
+				}
+		})
 	}
 
 	render() {
