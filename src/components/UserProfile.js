@@ -21,7 +21,10 @@ class UserProfile extends Component {
 			showUpdateUserForm: false,
 			currentBitcoinPrice: '',
 			currentLitecoinPrice: '',
-			currentEtheriumPrice: ''
+			currentEtheriumPrice: '',
+			bitcoin: null,
+			litecoin: null,
+			etherium: null
 		}
 		this.showBuyCurrenciesModal = this.showBuyCurrenciesModal.bind(this);
 		this.showSellCurrenciesModal = this.showSellCurrenciesModal.bind(this);
@@ -37,6 +40,9 @@ class UserProfile extends Component {
 		this.updateEtheriumValue = this.updateEtheriumValue.bind(this);
 		this.updateCashBalance = this.updateCashBalance.bind(this);
 		this.deleteUser = this.deleteUser.bind(this);
+		this.predictEtherium = this.predictEtherium.bind(this);
+		this.predictLitecoin = this.predictLitecoin.bind(this);
+		this.predictBitcoin = this.predictBitcoin.bind(this);
 	}
 
 	setUserAccounts(accounts) {
@@ -161,6 +167,22 @@ class UserProfile extends Component {
 		});
 	}
 
+	predictBitcoin(e) {
+		this.setState({
+			bitcoin: e.target.value
+		})
+	}
+	predictLitecoin(e) {
+		this.setState({
+			litecoin: e.target.value
+		})
+	}
+	predictEtherium(e) {
+		this.setState({
+			etherium: e.target.value
+		})
+	}
+
 	componentDidMount() {
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.match.params.user_id}`, {
 			method: "GET",
@@ -194,23 +216,24 @@ class UserProfile extends Component {
 			<div className="container-fluid ">
 				<div className="row ">
 					<div className="col-sm-6 col-2">
-						<div>
-						<h1>{this.state.user.name} Profile</h1>
-						Name:{this.state.user.name}, Cash Balance: ${this.state.cash_balance}
+						<div className="profile">
+						<h2>{this.state.user.name} Profile</h2>
+						<li>Name:{this.state.user.name}</li>
+						<li>Cash Balance: ${this.state.cash_balance}</li>
 						</div>
 						<div className="row">
 				            <div className="col-12 updateuser">	
 				              	<button onClick={ this.showUpdateUserForm } ref="updateuser" className="btn btn-outline-secondary btn-md btn-default updateuser-button">Update Profile</button>
 				            </div>
-				          	{ this.state.showUpdateUserForm ? <UpdateUserForm userId={this.props.match.params.user_id} update={ this.setUpdatedUser } close={ this.closeUpdateUserForm }/> : null }
+				          	{ this.state.showUpdateUserForm ? <UpdateUserForm className="updateuserform" userId={this.props.match.params.user_id} update={ this.setUpdatedUser } close={ this.closeUpdateUserForm }/> : null }
 				          	<div className="col-12 deleteuser">
 				          		<button onClick={ this.deleteUser } ref="deleteuser" className="btn btn-outline-danger btn-md btn-default deleteuser-button">Delete Profile</button>
 				          	</div>
 			          	</div>
 						<br />
-						<div>
+						<div className="accounts">
 							Accounts: {this.state.userAccounts.map((account) => {
-								return 	<div>
+								return 	<div className="cards">
 										<Card body inverse color="info">
 											<CardTitle>{account.currency_name}</CardTitle>
 											<br/>
@@ -221,23 +244,25 @@ class UserProfile extends Component {
 							})}
 						</div>
 						<br />
-						<div>
-						Update Bitcoin Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentBitcoinPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Bitcoin'})[0].units_of_currency))} 			
-							<div className="updatebitcoin">
-								 <button onClick= {this.updateBitcoinValue} ref="updatebitcoin" className="btn btn-outline-info btn-lg btn-default updatebitcoin-button">Update Bitcoin Value</button>
+						<div className="updatevalues">
+							<div>
+							Update Bitcoin Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentBitcoinPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Bitcoin'})[0].units_of_currency))} 			
+								<div className="updatebitcoin">
+									 <button onClick= {this.updateBitcoinValue} ref="updatebitcoin" className="btn btn-outline-info btn-lg btn-default updatebitcoin-button">Update Bitcoin Value</button>
+								</div>
+									Powered By: <Link to={"https://www.coindesk.com/price/"} target="_blank">CoinDesk</Link>
 							</div>
-								Powered By: <Link to={"https://www.coindesk.com/price/"} target="_blank">CoinDesk</Link>
-						</div>
-						<div>
-						Update Litecoin Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentLitecoinPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Litecoin'})[0].units_of_currency))} 			
-							<div className="updatelitecoin">
-								 <button onClick= {this.updateLitecoinValue} ref="updatelitecoin" className="btn btn-outline-info btn-lg btn-default updatelitecoin-button">Update Litecoin Value</button>
+							<div>
+							Update Litecoin Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentLitecoinPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Litecoin'})[0].units_of_currency))} 			
+								<div className="updatelitecoin">
+									 <button onClick= {this.updateLitecoinValue} ref="updatelitecoin" className="btn btn-outline-info btn-lg btn-default updatelitecoin-button">Update Litecoin Value</button>
+								</div>
 							</div>
-						</div>
-						<div>
-						Update Etherium Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentEtheriumPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Etherium'})[0].units_of_currency))} 			
-							<div className="updateetherium">
-								 <button onClick= {this.updateEtheriumValue} ref="updateetherium" className="btn btn-outline-info btn-lg btn-default updateetherium-button">Update Etherium Value</button>
+							<div>
+							Update Etherium Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentEtheriumPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Etherium'})[0].units_of_currency))} 			
+								<div className="updateetherium">
+									 <button onClick= {this.updateEtheriumValue} ref="updateetherium" className="btn btn-outline-info btn-lg btn-default updateetherium-button">Update Etherium Value</button>
+								</div>
 							</div>
 						</div>
 
@@ -255,6 +280,41 @@ class UserProfile extends Component {
 							<button onClick={ this.showConvertCurrenciesModal } ref="convertcurrencies" className="btn btn-lg btn-outline-secondary btn-default btn-block convertcurrencies-button">Convert Currencies</button>
 						</div>
 							{ this.state.showConvertCurrenciesModal ? <ConvertCurrenciesModal userIdConverting={this.props.match.params.user_id} accountsAfterConversion={ this.setUserAccounts } close={ this.closeConvertCurrenciesModal }/> : null }
+					</div>
+					<div className="predictPrices">
+						Predict Bitcoin price:  {this.state.bitcoin}             		
+						<form onSubmit= {this.predictBitcoin} >
+	               			<div>
+	             			<input onChange={this.state.bitcoin} type="radio" name="bitcoin" ref="Increase" value="Increase"  />Increase
+	             			<br/>
+	             			<input onChange={this.state.bitcoin} type="radio" name="bitcoin" ref="Decrease" value="Decrease"  />Decrease
+	             			<br/>
+	             			<input onChange={this.state.bitcoin} type="radio" name="bitcoin" ref="No change" value="No change"  />No change
+	             			</div>
+	             			<br/>
+				        </form>
+ 						Predict Litecoin price: {this.state.litecoin}              		
+						<form onSubmit= {this.predictLitecoin} >
+	               			<div>
+	             			<input onChange={this.state.litecoin} type="radio" name="litecoin" ref="Increase" value="Increase"  />Increase
+	             			<br/>
+	             			<input onChange={this.state.litecoin} type="radio" name="litecoin" ref="Decrease" value="Decrease"  />Decrease
+	             			<br/>
+	             			<input onChange={this.state.litecoin} type="radio" name="litecoin" ref="No change" value="No change"  />No change
+	             			</div>
+	             			<br/>
+				        </form>
+				        Predict Etherium price:  {this.state.etherium}             		
+						<form onSubmit= {this.predictEtherium} >
+	               			<div>
+	             			<input onChange={this.state.etherium} type="radio" name="etherium" ref="Increase" value="Increase"  />Increase
+	             			<br/>
+	             			<input onChange={this.state.etherium} type="radio" name="etherium" ref="Decrease" value="Decrease"  />Decrease
+	             			<br/>
+	             			<input onChange={this.state.etherium} type="radio" name="etherium" ref="No change" value="No change"  />No change
+	             			</div>
+	             			<br/>
+				        </form>
 					</div>
 				</div>
 			</div>

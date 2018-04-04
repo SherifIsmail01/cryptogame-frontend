@@ -3,16 +3,22 @@ import ReactDOM from 'react-dom';
 import ReactHighCharts from 'react-highcharts';
 import Users from './Users';
 import SignUpModal from './SignUpModal';
+import moment from 'moment';
+import $ from 'jquery';
+import { Link } from 'react-router-dom';
 
 
 
 class HomePage extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			users: '',
 			showSignUpModal: false,
-			accountsTransactions: []
+			accountsTransactions: [],
+			currentLitecoinPrice: '',
+			currentEtheriumPrice: '',
+			currentBitcoinPrice: ''
 		}
 		this.showSignUpModal = this.showSignUpModal.bind(this);
 		this.closeSignUpModal = this.closeSignUpModal.bind(this);
@@ -37,21 +43,60 @@ class HomePage extends Component {
 	}
 
 	componentDidMount() {
-		fetch(`${process.env.REACT_APP_BACKEND_URL}/accounts.json`, {
-			method: "GET"
-			}).then((res) => {
-				return res.json()
-			}).then((accounts) => {
-				console.log(accounts)
-				this.setState({accountsTransactions: accounts})
+		$.ajax({
+			method: "GET",
+			url: "https://api.coindesk.com/v1/bpi/currentprice.json",
+			dataType: "json",
+			error:  (error) => {
+				console.log(error)
+			},
+			success:  (data) => {
+				console.log(data.bpi.USD.rate_float)
+				this.setState({
+				 	currentBitcoinPrice: data.bpi.USD.rate_float
+				}) 
+			}
+		});
+		$.ajax({
+			method: "GET",
+			url: "http://coincap.io/front",
+			dataType: "json",
+			error:  (error) => {
+				console.log(error)
+			},
+			success:  (data) => {
+				console.log(data[4].price)
+				 this.setState({
+					currentLitecoinPrice: data[4].price
+				});
+			}
+		});
+		$.ajax({
+			method: "GET",
+			url: "http://coincap.io/front",
+			dataType: "json",
+			error:  (error) => {
+				console.log(error)
+			},
+			success:  (data) => {
+				console.log(data[1].price)
+				 this.setState({
+					currentEtheriumPrice: data[1].price
+				})
+			}
 		});
 	}
 
 
 	render() {
+			// var Bitcoin = {this.state.currentBitcoinPrice}
+			// var Litecoin = {this.state.currentLitecoinPrice}
+			// var Etherium = {this.state.currentEtheriumPrice}
 		return (
+
 			<div>
 				<h1>Welcome to Crypto Game</h1>
+
 				    <div className="row">
 			            <div className="col-12 signup">	
 			              	<button onClick={ this.showSignUpModal } ref="signup" className="btn btn-outline-secondary btn-md btn-default signup-button">Sign Up</button>
@@ -59,42 +104,52 @@ class HomePage extends Component {
 			      	</div>
 			          { this.state.showSignUpModal ? <SignUpModal myHistory={ this.props.history } signUp={ this.addUser } close={ this.closeSignUpModal }/> : null }
 			         <br />
+			  		{this.state.accountsTransactions.map((Transactions) => {
+					 		return <li>{moment().format(Transactions.updated_at)}</li>
+					 	})}
+			         <div className="date">Date: {moment().format('MMMM Do YYYY')}</div>
+
 				    <div className="chart">
 					<ReactHighCharts config = { {
 									title: {
-										text: 'Trading Transactions'
+										text: 'Crypto Currencies Market Price'
 									},
 							        xAxis: {
 							        	type: 'datetime',
 							        	dateTimelabelFormats: {
-							        		day: '%e of %b'
+							        		day: '%e of %b',
+							        		month: '%b \'%y',
+							        		year: '%Y'
 							        	}
 							        },
 							        yAxis: {
-							            categories: [5, 10]
+							            categories: [100, 200]
 							        },
 							        series: [{
 							        	type: 'line',
-							            data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 295.6, 254.4],
+							            data: [this.state.currentBitcoinPrice],
 							            name: 'Bitcoin',
-							            pointStart: Date.UTC(2018, 1, 1),
+							            pointStart: Date.UTC(2018, 3, 3),
 							            pointInterval: 24 * 3600 * 1000
 							        }, {
 							        	type: 'line',
-							        	data: [20, 7, 10, 29.2, 44.0, 76.0, 35.6, 48.5, 26.4, 94.1, 95.6, 45.4],
-							        	name: 'Litcoin',
-							        	pointStart: Date.UTC(2018, 1, 1),
+							        	data: [this.state.currentLitecoinPrice],
+							        	name: 'Litecoin',
+							        	pointStart: Date.UTC(2018, 3, 3),
 							            pointInterval: 24 * 3600 * 1000
 							        }, {
 							        	type: 'line',
-							        	data: [230, 72, 100, 219.2, 144.0, 176.0, 135.6, 248.5, 126.4, 94.1, 95.6, 145.4],
+							        	data: [this.state.currentEtheriumPrice],
 							        	name: 'Etherium',
-							        	pointStart: Date.UTC(2018, 1, 1),
+							        	pointStart: Date.UTC(2018, 3, 3),
 							            pointInterval: 24 * 3600 * 1000
 							        }]
 								} } ref="chart">
 					</ReactHighCharts>
+					Powered By: <Link to={"https://www.coindesk.com/price/"} target="_blank">CoinDesk</Link>
 					</div>
+			}
+			
 			</div>
 		)
 	}

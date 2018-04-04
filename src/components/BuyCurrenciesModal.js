@@ -42,6 +42,28 @@ class BuyCurrenciesModal extends Component {
 					alert("Insufficient Funds");
 				}
 		})
+		// fetch(`${process.env.REACT_APP_BACKEND_URL}/transactions`, {
+		// 	method: "POST",
+		// 	headers: {'Content-Type': 'application/json'},
+		// 	body: JSON.stringify({
+		// 		Bitcoin: 10703.9675,
+		// 		Litecoin: 220.755,
+		// 		Etherium: 886.96,
+		// 		type: this.state.buy,
+		// 		num_of_units: this.refs.numberOfUnits.value,
+		// 		user_id: 
+		// 	})
+		// 	}).then((res) => {
+		// 		console.log(res)
+		// 		if (res.status === 200) {
+		// 			 res.json().then((accounts) => {
+		// 			 	console.log(accounts)
+		// 		this.props.accountsAfterPurchase(accounts)})
+		// 		} else {
+		// 			e.preventDefault();
+		// 			alert("Insufficient Funds");
+		// 		}
+		// })
 	}
 
 	render() {
