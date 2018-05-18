@@ -108,10 +108,10 @@
 }
 
 .signup-button {
-  position: absolute;
-  vertical-align: 10px;
-  margin-left: 1100px;
-  margin-top: 0px;
+  /*position: relative;*/
+  vertical-align: 0px;
+  margin-left: 1080px;
+  margin-top: -50px;
 }
 
 .updateetherium-button {

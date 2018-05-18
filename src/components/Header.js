@@ -14,7 +14,7 @@ class Header extends Component {
 				<header className="App-header">
 		          <div className="row">
 		            <div className="col-12">
-		              <h1 className="App-title">Crypto Game</h1>
+		              <h1 className="App-title"> Welcome to Crypto Game</h1>
 		            </div>
 		           	<Link to='/' className="btn btn-outline-primary btn-default homepage-button">HomePage</Link>
 		          </div>
