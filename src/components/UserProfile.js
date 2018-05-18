@@ -22,9 +22,9 @@ class UserProfile extends Component {
 			currentBitcoinPrice: '',
 			currentLitecoinPrice: '',
 			currentEtheriumPrice: '',
-			bitcoin: null,
-			litecoin: null,
-			etherium: null
+			bitcoin: '',
+			litecoin: '',
+			etherium: ''
 		}
 		this.showBuyCurrenciesModal = this.showBuyCurrenciesModal.bind(this);
 		this.showSellCurrenciesModal = this.showSellCurrenciesModal.bind(this);
@@ -40,9 +40,9 @@ class UserProfile extends Component {
 		this.updateEtheriumValue = this.updateEtheriumValue.bind(this);
 		this.updateCashBalance = this.updateCashBalance.bind(this);
 		this.deleteUser = this.deleteUser.bind(this);
-		this.predictEtherium = this.predictEtherium.bind(this);
-		this.predictLitecoin = this.predictLitecoin.bind(this);
-		this.predictBitcoin = this.predictBitcoin.bind(this);
+		this.onChangePredictBitcoin = this.onChangePredictBitcoin.bind(this);
+		this.onChangePredictLitecoin = this.onChangePredictLitecoin.bind(this);
+		this.onChangePredictEtherium = this.onChangePredictEtherium.bind(this);
 	}
 
 	setUserAccounts(accounts) {
@@ -167,17 +167,17 @@ class UserProfile extends Component {
 		});
 	}
 
-	predictBitcoin(e) {
+	onChangePredictBitcoin(e) {
 		this.setState({
 			bitcoin: e.target.value
 		})
 	}
-	predictLitecoin(e) {
+	onChangePredictLitecoin(e) {
 		this.setState({
 			litecoin: e.target.value
 		})
 	}
-	predictEtherium(e) {
+	onChangePredictEtherium(e) {
 		this.setState({
 			etherium: e.target.value
 		})
@@ -237,7 +237,7 @@ class UserProfile extends Component {
 										<Card body inverse color="info">
 											<CardTitle>{account.currency_name}</CardTitle>
 											<br/>
-									        <CardText>Number of Units: {account.units_of_currency}</CardText>
+									        <CardText className="cards-text">Number of Units: {account.units_of_currency}</CardText>
 								      	</Card>
 								      	<br/>
 								      	</div>
@@ -282,37 +282,42 @@ class UserProfile extends Component {
 							{ this.state.showConvertCurrenciesModal ? <ConvertCurrenciesModal userIdConverting={this.props.match.params.user_id} accountsAfterConversion={ this.setUserAccounts } close={ this.closeConvertCurrenciesModal }/> : null }
 					</div>
 					<div className="predictPrices">
-						Predict Bitcoin price:  {this.state.bitcoin}             		
-						<form onSubmit= {this.predictBitcoin} >
+						Predict Bitcoin price:               		
+						<form onSubmit= {this.onChangePredictBitcoin} >
 	               			<div>
-	             			<input onChange={this.state.bitcoin} type="radio" name="bitcoin" ref="Increase" value="Increase"  />Increase
+	             			<input onChange={this.onChangePredictBitcoin} type="radio" name="bitcoin" ref="Increase" value="Increase"  />Increase
 	             			<br/>
-	             			<input onChange={this.state.bitcoin} type="radio" name="bitcoin" ref="Decrease" value="Decrease"  />Decrease
+	             			<input onChange={this.onChangePredictBitcoin} type="radio" name="bitcoin" ref="Decrease" value="Decrease"  />Decrease
 	             			<br/>
-	             			<input onChange={this.state.bitcoin} type="radio" name="bitcoin" ref="No change" value="No change"  />No change
+	             			<input onChange={this.onChangePredictBitcoin} type="radio" name="bitcoin" ref="No change" value="No change"  />No change
+	             			</div>
+	             			<div>
+	             				<h4>{this.state.bitcoin}</h4>
 	             			</div>
 	             			<br/>
 				        </form>
- 						Predict Litecoin price: {this.state.litecoin}              		
-						<form onSubmit= {this.predictLitecoin} >
+ 						Predict Litecoin price:               		
+						<form onSubmit= {this.onChangePredictLitecoin} >
 	               			<div>
-	             			<input onChange={this.state.litecoin} type="radio" name="litecoin" ref="Increase" value="Increase"  />Increase
+	             			<input onChange={this.onChangePredictLitecoin} type="radio" name="litecoin" ref="Increase" value="Increase"  />Increase
 	             			<br/>
-	             			<input onChange={this.state.litecoin} type="radio" name="litecoin" ref="Decrease" value="Decrease"  />Decrease
+	             			<input onChange={this.onChangePredictLitecoin} type="radio" name="litecoin" ref="Decrease" value="Decrease"  />Decrease
 	             			<br/>
-	             			<input onChange={this.state.litecoin} type="radio" name="litecoin" ref="No change" value="No change"  />No change
+	             			<input onChange={this.onChangePredictLitecoin} type="radio" name="litecoin" ref="No change" value="No change"  />No change
 	             			</div>
+	             				<h4>{this.state.litecoin}</h4>
 	             			<br/>
 				        </form>
-				        Predict Etherium price:  {this.state.etherium}             		
-						<form onSubmit= {this.predictEtherium} >
+				        Predict Etherium price:               		
+						<form onSubmit= {this.onChangePredictEtherium} >
 	               			<div>
-	             			<input onChange={this.state.etherium} type="radio" name="etherium" ref="Increase" value="Increase"  />Increase
+	             			<input onChange={this.onChangePredictEtherium} type="radio" name="etherium" ref="Increase" value="Increase"  />Increase
 	             			<br/>
-	             			<input onChange={this.state.etherium} type="radio" name="etherium" ref="Decrease" value="Decrease"  />Decrease
+	             			<input onChange={this.onChangePredictEtherium} type="radio" name="etherium" ref="Decrease" value="Decrease"  />Decrease
 	             			<br/>
-	             			<input onChange={this.state.etherium} type="radio" name="etherium" ref="No change" value="No change"  />No change
+	             			<input onChange={this.onChangePredictEtherium} type="radio" name="etherium" ref="No change" value="No change"  />No change
 	             			</div>
+	             				<h4>{this.state.etherium}</h4>
 	             			<br/>
 				        </form>
 					</div>
