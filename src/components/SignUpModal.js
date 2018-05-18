@@ -59,4 +59,5 @@ class SignUpModal extends Component {
     	);
 	}
 }
+
 export default SignUpModal

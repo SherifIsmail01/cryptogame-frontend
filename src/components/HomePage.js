@@ -52,10 +52,15 @@ class HomePage extends Component {
 			},
 			success:  (data) => {
 				console.log(data.bpi.USD.rate_float)
+				// var series = chart.series[0],
+				// 	shift = series.data.length > 20;
+				// chart.series[0].addPoint(point, true, shift);
+				// setTimeout(getBitcoinPrice, 1000 * 3600 * 24);
 				this.setState({
 				 	currentBitcoinPrice: data.bpi.USD.rate_float
 				}) 
-			}
+			},
+			cache: false
 		});
 		$.ajax({
 			method: "GET",
@@ -89,11 +94,8 @@ class HomePage extends Component {
 
 
 	render() {
-			// var Bitcoin = {this.state.currentBitcoinPrice}
-			// var Litecoin = {this.state.currentLitecoinPrice}
-			// var Etherium = {this.state.currentEtheriumPrice}
+			var chart;
 		return (
-
 			<div>
 				<h1>Welcome to Crypto Game</h1>
 
@@ -108,6 +110,38 @@ class HomePage extends Component {
 					 		return <li>{moment().format(Transactions.updated_at)}</li>
 					 	})}
 			         <div className="date">Date: {moment().format('MMMM Do YYYY')}</div>
+
+ 				// 	{
+					// 	chart = new Highcharts.Chart({
+					// 		chart: {
+					// 			renderTo: 'container',
+					// 			defaultSeriesType: 'spline',
+					// 			events: {
+					// 				load: this.getBitcoinPrice
+					// 			}
+					// 		},
+					// 		title: {
+					// 			text: 'Live data'
+					// 		},
+					// 		xAxis: {
+					// 			type: 'datetime',
+					// 			tickPixelInterval: 150,
+					// 			maxZoom: 20 * 1000
+					// 		},
+					// 		yAxis: {
+					// 			minPadding: 0.2,
+					// 			maxPadding: 0.2,
+					// 			title: {
+					// 				text: 'Value',
+					// 				margin: 80
+					// 			}
+					// 		},
+					// 		series: [{
+					// 			name: 'Bitcoin',
+					// 			data: this.getBitcoinPrice
+					// 		}]
+					// 	})
+					// }
 
 				    <div className="chart">
 					<ReactHighCharts config = { {

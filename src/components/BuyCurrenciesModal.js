@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
+
 class BuyCurrenciesModal extends Component {
 	constructor() {
 		super();
