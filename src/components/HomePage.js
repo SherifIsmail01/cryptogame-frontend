@@ -10,10 +10,13 @@ import { Link } from 'react-router-dom';
 
 
 class HomePage extends Component {
+
 	constructor(props) {
 		super(props);
 		this.state = {
 			users: '',
+			values: {},
+			disclaimer: '',
 			showSignUpModal: false,
 			accountsTransactions: []
 		}
@@ -39,8 +42,30 @@ class HomePage extends Component {
 		})
 	}
 
+	componentDidMount() {
+		fetch('https://api.coindesk.com/v1/bpi/historical/close.json')
+		.then(res => res.json())
+		.then(json => {
+			console.log(json);
+			this.setState({
+				values: json.bpi,
+				disclaimer: json.disclaimer
+			});
+		});
+	}
+
 	render() {
-			var chart;
+
+		const { values }  = this.state;
+
+		const dates = Object.keys(values).map(date => {
+			return date;
+		})
+
+		const prices = Object.values(values).map(p => {
+			return p;
+		})
+
 		return (
 			<div>
 			    <div className="row">
@@ -50,49 +75,36 @@ class HomePage extends Component {
 		      	</div>
 		          	{ this.state.showSignUpModal ? <SignUpModal myHistory={ this.props.history } signUp={ this.addUser } close={ this.closeSignUpModal }/> : null }
 		        <br />
-			  		{this.state.accountsTransactions.map((Transactions) => {
-					 		return <li>{moment().format(Transactions.updated_at)}</li>
-					})}
 		        <div className="date">Date: {moment().format('MMMM Do YYYY')}</div>
 
 			    <div className="chart">
 					<ReactHighCharts config = { {
 						title: {
-							text: 'Crypto Currencies sample Market Price'
+							text: 'Bitcoin Price last 30 days'
 						},
 				        xAxis: {
 				        	type: 'datetime',
-				        	dateTimelabelFormats: {
-				        		day: '%e of %b',
-				        		month: '%b \'%y',
-				        		year: '%Y'
-				        	}
-				        },
-				        yAxis: {
-				            categories: [100, 200]
+		        	        dateTimeLabelFormats: {
+					            day: '%e of %b',
+					            month: '%b \'%y',
+					        }
 				        },
 				        series: [{
 				        	type: 'line',
-				            data: [39, 72, 48, 189, 124, 421, 333, 201, 166, 98, 59, 114],
+				            data: prices,
 				            name: 'Bitcoin',
-				            pointStart: Date.UTC(2018, 3, 3),
-				            pointInterval: 24 * 3600 * 1000
-				        }, {
-				        	type: 'line',
-				        	data: [37, 41, 72, 30, 104, 123, 115, 99, 77, 64, 132, 156, 192],
-				        	name: 'Litecoin',
-				        	pointStart: Date.UTC(2018, 3, 3),
-				            pointInterval: 24 * 3600 * 1000
-				        }, {
-				        	type: 'line',
-				        	data: [14, 82, 35, 42, 46, 52, 71, 83, 119, 80, 301, 224, 95],
-				        	name: 'Etherium',
-				        	pointStart: Date.UTC(2018, 3, 3),
-				            pointInterval: 24 * 3600 * 1000
+				        	pointStart: Date.parse(dates[0]),
+				        	pointInterval: 24 * 1000 * 3600
 				        }]
+
 					} } ref="chart">
 					</ReactHighCharts>
+
 					Powered By: <Link to={"https://www.coindesk.com/price/"} target="_blank">CoinDesk</Link>
+					<p className="disclaimer">
+						{this.state.disclaimer}
+					</p>
+
 				</div>
 			</div>
 		)

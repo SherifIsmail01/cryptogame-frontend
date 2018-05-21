@@ -107,11 +107,14 @@
   margin-bottom: 80px;
 }
 
-.signup-button {
-  /*position: relative;*/
-  vertical-align: 0px;
-  margin-left: 1080px;
-  margin-top: -50px;
+.signup {
+  position: absolute;
+  padding-left: 1000px;
+}
+
+.date {
+  padding-top: 20px;
+  padding-right: 0px;
 }
 
 .updateetherium-button {
