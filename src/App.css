@@ -61,7 +61,7 @@
     position: fixed;
     font-size: 16px;
     left: 25%;
-    height: 80%;
+    height: 100%;
     width: 50%;
     border-radius: 30px;
     color: #2c6c68;
@@ -108,8 +108,8 @@
 }
 
 .signup {
-  position: absolute;
-  padding-left: 1000px;
+  position: relative !important;
+  left: 48%;
 }
 
 .date {
@@ -185,7 +185,4 @@
   margin-left: 500px;
   top: 100px;
 }
-/*.cards-text {
-  color: black;
-}*/
 

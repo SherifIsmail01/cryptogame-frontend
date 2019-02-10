@@ -16,7 +16,7 @@ class Header extends Component {
 		            <div className="col-12">
 		              <h1 className="App-title"> Welcome to Crypto Game</h1>
 		            </div>
-		           	<Link to='/' className="btn btn-outline-primary btn-default homepage-button">HomePage</Link>
+		           	<Link to='/' className="btn btn-outline-primary  btn-default homepage-button">HomePage</Link>
 		          </div>
 		        </header>
 			</div>

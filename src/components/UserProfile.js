@@ -66,14 +66,16 @@ class UserProfile extends Component {
 	closeUpdateUserForm() {
 		this.setState({
 			showUpdateUserForm: false
-		})
+		});
+		window.location.reload();
 	}
 
 	setUpdatedUser(updatedUser) {
 		console.log(updatedUser)
 		this.setState({
 			user: updatedUser
-		})
+		});
+		window.location.reload();
 	}
 
 	deleteUser(e) {
@@ -83,7 +85,8 @@ class UserProfile extends Component {
 			method: "DELETE",
 			}).then((res) => {
 				this.props.history.push('/');
-			})
+			});
+		window.location.reload();
 	}
 
 	showBuyCurrenciesModal() {
@@ -94,7 +97,8 @@ class UserProfile extends Component {
 	closeBuyCurrenciesModal() {
 		this.setState({
 			showBuyCurrenciesModal: false
-		})
+		});
+		window.location.reload();
 	}
 
 	showSellCurrenciesModal() {
@@ -105,7 +109,8 @@ class UserProfile extends Component {
 	closeSellCurrenciesModal() {
 		this.setState({
 			showSellCurrenciesModal: false
-		})
+		});
+		window.location.reload();
 	}
 
 	showConvertCurrenciesModal() {
@@ -116,10 +121,12 @@ class UserProfile extends Component {
 	closeConvertCurrenciesModal() {
 		this.setState({
 			showConvertCurrenciesModal: false
-		})
+		});
+		window.location.reload();
 	}
 
 	updateBitcoinValue(e) {
+		console.log('update bitcoin value button clicked');
 		$.ajax({
 			method: "GET",
 			url: "https://api.coindesk.com/v1/bpi/currentprice.json",
@@ -128,9 +135,10 @@ class UserProfile extends Component {
 				console.log(error)
 			},
 			success:  (data) => {
+				console.log(data);
 				this.setState({
 				 	currentBitcoinPrice: data.bpi.USD.rate_float
-				}) 
+				}) ;
 			}
 		});
 	}
@@ -144,6 +152,7 @@ class UserProfile extends Component {
 				console.log(error)
 			},
 			success:  (data) => {
+				console.log(data);
 				 this.setState({
 					currentLitecoinPrice: data[4].price
 				});
@@ -160,6 +169,7 @@ class UserProfile extends Component {
 				console.log(error)
 			},
 			success:  (data) => {
+				console.log(data);
 				 this.setState({
 					currentEtheriumPrice: data[1].price
 				})
@@ -184,20 +194,6 @@ class UserProfile extends Component {
 	}
 
 	componentDidMount() {
-		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.match.params.user_id}`, {
-			method: "GET",
-			}).then((res) => {
-				return res.json()
-			}).then((user) => {
-				this.setState({
-					user: user,
-					cash_balance: user.cash_balance,
-					userAccounts: user.accounts
-				})
-		});
-	}
-
-	componentWillUpdate() {
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.match.params.user_id}`, {
 			method: "GET",
 			}).then((res) => {

@@ -102,3 +102,4 @@ class ConvertCurrenciesModal extends Component {
 	}
 }
 export default ConvertCurrenciesModal
+
