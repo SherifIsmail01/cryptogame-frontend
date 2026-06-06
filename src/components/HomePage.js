@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import ReactHighCharts from 'react-highcharts';
+import CryptoChart from './CryptoChart';
 import Users from './Users';
 import SignUpModal from './SignUpModal';
 import moment from 'moment';
@@ -15,13 +15,15 @@ class HomePage extends Component {
 		super(props);
 		this.state = {
 			users: '',
-			values: {},
 			disclaimer: '',
 			showSignUpModal: false,
+			showSignInModal: false,
 			accountsTransactions: []
 		}
 		this.showSignUpModal = this.showSignUpModal.bind(this);
 		this.closeSignUpModal = this.closeSignUpModal.bind(this);
+		this.showSignInModal = this.showSignInModal.bind(this);
+		this.closeSignInModal = this.closeSignInModal.bind(this);
 		this.addUser = this.addUser.bind(this);
 	}
 
@@ -36,79 +38,97 @@ class HomePage extends Component {
 		})
 	}
 
+	showSignInModal() {
+		this.setState({
+			showSignInModal: true
+		})
+	}
+	closeSignInModal() {
+		this.setState({
+			showSignInModal: false
+		})
+	}
+
 	addUser(user) {
 		this.setState({
 			users: this.state.users.concat(user)
 		})
 	}
 
-	componentDidMount() {
-		fetch('https://api.coindesk.com/v1/bpi/historical/close.json')
-		.then(res => res.json())
-		.then(json => {
-			console.log(json);
-			this.setState({
-				values: json.bpi,
-				disclaimer: json.disclaimer
-			});
-		});
-	}
 
 	render() {
 
-		const { values }  = this.state;
+		const cachedUserId = localStorage.getItem("userId");
+		const cachedUserName = localStorage.getItem("userName");
 
-		const dates = Object.keys(values).map(date => {
-			return date;
-		})
-
-		const prices = Object.values(values).map(p => {
-			return p;
-		})
 
 		return (
 			<div>
-			    <div className="row">
-		            <div className="col-12 signup">	
-		              	<button onClick={ this.showSignUpModal } ref="signup" className="btn btn-outline-secondary btn-default signup-button">Sign Up</button>
-		            </div>
-		      	</div>
-		          	{ this.state.showSignUpModal ? <SignUpModal myHistory={ this.props.history } signUp={ this.addUser } close={ this.closeSignUpModal }/> : null }
-		        <br />
+			{/* ✅ CLEANED: Removed the extra hardcoded duplicate buttons from this row */}
+				<div className="row">
+					<div className="col-12 signup">	
+						{/* Left empty intentionally so buttons only render in our navigation deck below */}
+					</div>
+				</div>
+
+				{/* ✅ KEEP YOUR DETAILED PROPS: This ensures your login/signup validation functions work perfectly */}
+				{ this.state.showSignUpModal ? <SignUpModal myHistory={ this.props.history } signUp={ this.addUser } close={ this.closeSignUpModal }/> : null }
+				{ this.state.showSignInModal ? (<SignInModal close={() => { this.setState({ showSignInModal: false }); this.props.history.push("/"); }} /> ) : null }
+			<br />
+
+
+
+			{/* --- PASTE THIS BLOCK JUST OVER YOUR SIGNUP / SIGNIN BUTTONS ELEMENT ROW --- */}
+				<div className="homepage-navigation-deck text-center my-4">
+					{localStorage.getItem("userId") && localStorage.getItem("userName") ? (
+						// 1. DISPLAY THIS ONLY IF SIGNED IN
+						<div className="signed-in-box">
+							<Link to={`/profile/${localStorage.getItem("userId")}`} className="btn btn-primary btn-lg px-5 shadow-sm">
+								Go to My Profile ({localStorage.getItem("userName")})
+							</Link>
+						</div>
+					) : (
+						// 2. DISPLAY THIS ONLY IF SIGNED OUT
+						<div className="auth-buttons-container">
+							<div className="d-flex justify-content-center gap-3">
+								<button onClick={() => this.setState({ showSignUpModal: true })} className="btn btn-success btn-md px-4 mx-2 shadow-sm">
+									Sign Up
+								</button>
+								<button onClick={() => this.setState({ showSignInModal: true })} className="btn btn-outline-success btn-md px-4 mx-2 shadow-sm">
+									Sign In to Game Account
+								</button>
+							</div>
+						</div>
+					)}
+
+					{/* ✅ THE FLOATING STATE GUARDS: These will now ONLY load floating above the page when clicked */}
+					{this.state.showSignUpModal && (
+						<SignUpModal close={() => this.setState({ showSignUpModal: false })} />
+					)}
+					
+					{this.state.showSignInModal && (
+						<SignInModal close={() => this.setState({ showSignInModal: false })} />
+					)}
+				</div>
+
+					
+
 		        <div className="date">Date: {moment().format('MMMM Do YYYY')}</div>
 
-			    <div className="chart">
-					<ReactHighCharts config = { {
-						title: {
-							text: 'Bitcoin Price last 30 days'
-						},
-				        xAxis: {
-				        	type: 'datetime',
-		        	        dateTimeLabelFormats: {
-					            day: '%e of %b',
-					            month: '%b \'%y',
-					        }
-				        },
-				        series: [{
-				        	type: 'line',
-				            data: prices,
-				            name: 'Bitcoin',
-				        	pointStart: Date.parse(dates[0]),
-				        	pointInterval: 24 * 1000 * 3600
-				        }]
+			    <div className="crypto-chart-container" style={{ padding: '20px' }}>
+					<h1>Market Dashboard</h1>
+					
+					<CryptoChart />
 
-					} } ref="chart">
-					</ReactHighCharts>
-
-					Powered By: <Link to={"https://www.coindesk.com/price/"} target="_blank">CoinDesk</Link>
+					Powered By: <Link to={"https://www.coingecko.com"} target="_blank">coingecko</Link>
 					<p className="disclaimer">
 						{this.state.disclaimer}
 					</p>
 
 				</div>
 			</div>
-		)
+		);
 	}
 }
 
-export default HomePage
+export default HomePage;

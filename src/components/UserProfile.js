@@ -19,12 +19,13 @@ class UserProfile extends Component {
 			showSellCurrenciesModal: false,
 			showConvertCurrenciesModal: false,
 			showUpdateUserForm: false,
+			updatedUser: '',
 			currentBitcoinPrice: '',
 			currentLitecoinPrice: '',
-			currentEtheriumPrice: '',
+			currentEthereumPrice: '',
 			bitcoin: '',
 			litecoin: '',
-			etherium: ''
+			ethereum: ''
 		}
 		this.showBuyCurrenciesModal = this.showBuyCurrenciesModal.bind(this);
 		this.showSellCurrenciesModal = this.showSellCurrenciesModal.bind(this);
@@ -37,12 +38,12 @@ class UserProfile extends Component {
 		this.setUserAccounts = this.setUserAccounts.bind(this);
 		this.updateBitcoinValue = this.updateBitcoinValue.bind(this);
 		this.updateLitecoinValue = this.updateLitecoinValue.bind(this);
-		this.updateEtheriumValue = this.updateEtheriumValue.bind(this);
+		this.updateEthereumValue = this.updateEthereumValue.bind(this);
 		this.updateCashBalance = this.updateCashBalance.bind(this);
 		this.deleteUser = this.deleteUser.bind(this);
 		this.onChangePredictBitcoin = this.onChangePredictBitcoin.bind(this);
 		this.onChangePredictLitecoin = this.onChangePredictLitecoin.bind(this);
-		this.onChangePredictEtherium = this.onChangePredictEtherium.bind(this);
+		this.onChangePredictEthereum = this.onChangePredictEthereum.bind(this);
 	}
 
 	setUserAccounts(accounts) {
@@ -125,57 +126,63 @@ class UserProfile extends Component {
 		window.location.reload();
 	}
 
+
 	updateBitcoinValue(e) {
-		console.log('update bitcoin value button clicked');
-		$.ajax({
-			method: "GET",
-			url: "https://api.coindesk.com/v1/bpi/currentprice.json",
-			dataType: "json",
-			error:  (error) => {
-				console.log(error)
-			},
-			success:  (data) => {
-				console.log(data);
-				this.setState({
-				 	currentBitcoinPrice: data.bpi.USD.rate_float
-				}) ;
-			}
-		});
+		if (e && e.preventDefault) e.preventDefault();
+		
+		// ✅ SECURE: Points to your Ruby proxy router path
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/api/crypto_rates/spot/bitcoin`)
+			.then(res => {
+				if (!res.ok) throw new Error("Bitcoin fetch failed");
+				return res.json();
+			})
+			.then(data => {
+				// Rails returns the precise CoinGecko object: { bitcoin: { usd: X } }
+				this.setState({ currentBitcoinPrice: data.bitcoin.usd });
+				console.log("Bitcoin Price Updated securely via Rails proxy!");
+			})
+			.catch(error => {
+				console.error("Bitcoin API Error:", error);
+			});
 	}
 
 	updateLitecoinValue(e) {
-		$.ajax({
-			method: "GET",
-			url: "http://coincap.io/front",
-			dataType: "json",
-			error:  (error) => {
-				console.log(error)
-			},
-			success:  (data) => {
-				console.log(data);
-				 this.setState({
-					currentLitecoinPrice: data[4].price
-				});
-			}
-		});
+		if (e && e.preventDefault) e.preventDefault();
+		
+		// ✅ SECURE: Points to your Ruby proxy router path
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/api/crypto_rates/spot/litecoin`)
+			.then(res => {
+				if (!res.ok) throw new Error("Litecoin fetch failed");
+				return res.json();
+			})
+			.then(data => {
+				this.setState({ currentLitecoinPrice: data.litecoin.usd });
+				console.log("Litecoin Price Updated securely via Rails proxy!");
+			})
+			.catch(error => {
+				console.error("Litecoin API Error:", error);
+			});
 	}
 
-	updateEtheriumValue(e) {
-		$.ajax({
-			method: "GET",
-			url: "http://coincap.io/front",
-			dataType: "json",
-			error:  (error) => {
-				console.log(error)
-			},
-			success:  (data) => {
-				console.log(data);
-				 this.setState({
-					currentEtheriumPrice: data[1].price
-				})
-			}
-		});
+	updateEthereumValue(e) {
+		if (e && e.preventDefault) e.preventDefault();
+		
+		// ✅ SECURE: Points to your Ruby proxy router path
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/api/crypto_rates/spot/ethereum`)
+			.then(res => {
+				if (!res.ok) throw new Error("Ethereum fetch failed");
+				return res.json();
+			})
+			.then(data => {
+				this.setState({ currentEthereumPrice: data.ethereum.usd });
+				console.log("Ethereum Price Updated securely via Rails proxy!");
+			})
+			.catch(error => {
+				console.error("Ethereum API Error:", error);
+			});
 	}
+
+
 
 	onChangePredictBitcoin(e) {
 		this.setState({
@@ -187,35 +194,57 @@ class UserProfile extends Component {
 			litecoin: e.target.value
 		})
 	}
-	onChangePredictEtherium(e) {
+	onChangePredictEthereum(e) {
 		this.setState({
-			etherium: e.target.value
+			ethereum: e.target.value
 		})
 	}
 
 	componentDidMount() {
-		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${this.props.match.params.user_id}`, {
+
+		const currentId = this.props.match.params.user_id || this.props.match.params.id;
+		
+		console.log("Loading UserProfile for Database Account ID:", currentId);
+
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${currentId}.json`, {
 			method: "GET",
 			}).then((res) => {
+				if (!res.ok) throw new Error("Profile load failed");
 				return res.json()
 			}).then((user) => {
 				this.setState({
 					user: user,
 					cash_balance: user.cash_balance,
-					userAccounts: user.accounts
-				})
+					userAccounts: user.accounts || []
+				});
+		})
+		.catch(err => {
+			console.error("Error loading user profile onto screen:", err)
 		});
 	}
+
+	// 1. Place this method helper script right above your render() block inside UserProfile.js:
+// 1. Place this method helper script right above your render() block inside UserProfile.js:
+	handleUserLogOut = () => {
+		localStorage.removeItem("userId");
+		localStorage.removeItem("userName");
+		this.props.history.push("/"); // Drops player safely back to the home chart landing deck
+	};
 
 	render() {
 		return (
 			<div className="container-fluid ">
 				<div className="row ">
 					<div className="col-sm-6 col-2">
+						<div className="signout">
+							<button onClick={this.handleSignOut} className="btn btn-dark w-100 mt-3">
+								Sign Out
+							</button>
+						</div>
 						<div className="profile">
-						<h2>{this.state.user.name} Profile</h2>
-						<li>Name:{this.state.user.name}</li>
-						<li>Cash Balance: ${this.state.cash_balance}</li>
+							<h2>{this.state.user.name} Profile</h2>
+							<li>Name:{this.state.user.name}</li>
+							<li>Cash Balance: ${this.state.cash_balance}</li>
 						</div>
 						<div className="row">
 				            <div className="col-12 updateuser">	
@@ -228,8 +257,8 @@ class UserProfile extends Component {
 			          	</div>
 						<br />
 						<div className="accounts">
-							Accounts: {this.state.userAccounts.map((account) => {
-								return 	<div className="cards">
+							Accounts: {(this.state.userAccounts || []).map((account, index) => {
+								return 	<div className="cards" key={index}>
 										<Card body inverse color="info">
 											<CardTitle>{account.currency_name}</CardTitle>
 											<br/>
@@ -240,24 +269,25 @@ class UserProfile extends Component {
 							})}
 						</div>
 						<br />
-						<div className="updatevalues">
+						<div className="row updatevalues-buttons">
 							<div>
-							Update Bitcoin Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentBitcoinPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Bitcoin'})[0].units_of_currency))} 			
 								<div className="updatebitcoin">
-									 <button onClick= {this.updateBitcoinValue} ref="updatebitcoin" className="btn btn-outline-info btn-lg btn-default updatebitcoin-button">Update Bitcoin Value</button>
+										Update Bitcoin Value: ${this.state.userAccounts.length !== 0 && this.state.currentBitcoinPrice && 
+											((this.state.currentBitcoinPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Bitcoin'})[0]?.units_of_currency || 0))}
+									 <button onClick= {this.updateBitcoinValue} ref="updatebitcoin" className="btn btn-outline-secondary btn-block btn-md btn-default updatebitcoin-button">Update Bitcoin Value</button>
 								</div>
-									Powered By: <Link to={"https://www.coindesk.com/price/"} target="_blank">CoinDesk</Link>
+									Powered By: <Link to={"https://www.coingecko.com/price/"} target="_blank">CoinGecko</Link>
 							</div>
 							<div>
-							Update Litecoin Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentLitecoinPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Litecoin'})[0].units_of_currency))} 			
-								<div className="updatelitecoin">
-									 <button onClick= {this.updateLitecoinValue} ref="updatelitecoin" className="btn btn-outline-info btn-lg btn-default updatelitecoin-button">Update Litecoin Value</button>
+										Update Litecoin Value: ${this.state.userAccounts.length !== 0 && this.state.currentLitecoinPrice && 
+											((this.state.currentLitecoinPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Litecoin'})[0]?.units_of_currency || 0))}								<div className="updatelitecoin">
+									 <button onClick= {this.updateLitecoinValue} ref="updatelitecoin" className="btn btn-outline-secondary btn-block btn-md btn-default updatelitecoin-button">Update Litecoin Value</button>
 								</div>
 							</div>
 							<div>
-							Update Etherium Value: ${this.state.userAccounts.length !== 0 && ((this.state.currentEtheriumPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Etherium'})[0].units_of_currency))} 			
-								<div className="updateetherium">
-									 <button onClick= {this.updateEtheriumValue} ref="updateetherium" className="btn btn-outline-info btn-lg btn-default updateetherium-button">Update Etherium Value</button>
+										Update Ethereum Value: ${this.state.userAccounts.length !== 0 && this.state.currentEthereumPrice && 
+											((this.state.currentEthereumPrice) * (this.state.userAccounts.filter((currencies) => {return currencies.currency_name === 'Ethereum'})[0]?.units_of_currency || 0))}								<div className="updateethereum">
+									 <button onClick= {this.updateEthereumValue} ref="updateethereum" className="btn btn-outline-secondary btn-block btn-md btn-default updateethereum-button">Update Ethereum Value</button>
 								</div>
 							</div>
 						</div>
@@ -304,16 +334,16 @@ class UserProfile extends Component {
 	             				<h4>{this.state.litecoin}</h4>
 	             			<br/>
 				        </form>
-				        Predict Etherium price:               		
-						<form onSubmit= {this.onChangePredictEtherium} >
+				        Predict Ethereum price:               		
+						<form onSubmit= {this.onChangePredictEthereum} >
 	               			<div>
-	             			<input onChange={this.onChangePredictEtherium} type="radio" name="etherium" ref="Increase" value="Increase"  />Increase
+	             			<input onChange={this.onChangePredictEthereum} type="radio" name="ethereum" ref="Increase" value="Increase"  />Increase
 	             			<br/>
-	             			<input onChange={this.onChangePredictEtherium} type="radio" name="etherium" ref="Decrease" value="Decrease"  />Decrease
+	             			<input onChange={this.onChangePredictEthereum} type="radio" name="ethereum" ref="Decrease" value="Decrease"  />Decrease
 	             			<br/>
-	             			<input onChange={this.onChangePredictEtherium} type="radio" name="etherium" ref="No change" value="No change"  />No change
+	             			<input onChange={this.onChangePredictEthereum} type="radio" name="ethereum" ref="No change" value="No change"  />No change
 	             			</div>
-	             				<h4>{this.state.etherium}</h4>
+	             				<h4>{this.state.ethereum}</h4>
 	             			<br/>
 				        </form>
 					</div>

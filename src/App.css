@@ -1,3 +1,6 @@
+/* ==========================================================================
+   1. GLOBAL & APP STYLES
+   ========================================================================== */
 .App {
   text-align: center;
 }
@@ -15,174 +18,383 @@
   font-size: large;
 }
 
-.container {
-  margin-left: 20px;
-}
-
-.buycurrencies {
-  position: absolute;
-  top: 250px;
-  right: 700px;
-}
-
-.sellcurrencies {
-  position: absolute;
-  top: 250px;
-  right: 530px;
-}
-
-.convertcurrencies {
-  position: absolute;
-  top: 250px;
-  right: 325px;
-}
-
-.buycurrencies-button {
-  padding: 5px;
-  font-size: 20px;
-  border-radius: 5px;
-}
-
-.sellcurrencies-button {
-  padding: 5px;
-  font-size: 20px;
-  border-radius: 5px;
-}
-.convertcurrencies-button {
-  padding: 5px;
-  font-size: 20px;
-  border-radius: 5px;
-}
-
-.modal {
-    margin-top: 0px;
-    line-height: 1.5em;
-    display: inline-block;
-    position: fixed;
-    font-size: 16px;
-    left: 25%;
-    height: 100%;
-    width: 50%;
-    border-radius: 30px;
-    color: #2c6c68;
-    background-color: lightblue;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 20px 20px 0 rgba(0,0,0,0.19);
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-
-}
-.modal-header {
-    padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
-}
-
-
-.App-footer {
-  position: fixed;
-  flex:0.1;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: black;
-  flex: row;
-  text-align: center;
-  color: white;
-  height: 60px;
-  margin-top: 20px;
-}
-
-.usercomponent {
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-}
-
-.homepage-button {
-  position: absolute;
-  right: 3%;
-  margin-top: 38px;
-}
-
 .chart {
   margin-bottom: 80px;
 }
 
 .signup {
-  position: relative !important;
-  left: 48%;
-}
-
-.date {
-  padding-top: 20px;
-  padding-right: 0px;
-}
-
-.updateetherium-button {
-  margin-bottom: 100px;
-}
-
-.updateuser-button {
-  position: relative;
-  margin-right: 0px;
+  text-align: center;
   margin-top: 20px;
-  margin-left: 1050px;
-}
-.deleteuser-button {
-  position: relative;
-  margin-right: 0px;
-  margin-top: 20px;
-  margin-left: 1050px;
 }
 
 .date {
   text-align: right;
+  padding-top: 20px;
 }
 
-.predictPrices {
-
-  background-color: #0ff0ff;
-  background-image: -webkit-linear-gradient(0deg, transparent 20%, hsla(0,0%,100%,.7), transparent 80%),
-                  -webkit-linear-gradient(90deg, transparent 20%, hsla(0,0%,100%,.7), transparent 80%);
+/* ==========================================================================
+   2. HEADER & FOOTER FIXED POSITIONS
+   ========================================================================== */
+.homepage-button {
   position: absolute;
-  border-radius: 5px;
-  box-shadow: inset 0 1px 1px hsla(0,0%,100%,.8),
-                0 0 0 1px hsla(0,0%,0%,.6),
-                0 2px 3px hsla(0,0%,0%,.6),
-                0 4px 3px hsla(0,0%,0%,.4),
-                0 6px 6px hsla(0,0%,0%,.2),
-                0 10px 6px hsla(0,0%,0%,.2);
-  -webkit-appearance: none;
-  top: 300px;
-  right: 50px;
+  right: 3%;
+  top: 38px;
+  z-index: 100;
+}
+
+/* ==========================================================================
+   APP FOOTER AND DISCLAIMER UTILITIES OVERHAUL
+   ========================================================================== */
+.App-footer {
+  /* ✅ THE FIX: Switched from position: fixed to standard static block flow */
+  position: relative !important; 
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
+  
+  width: 100% !important;
+  background-color: #000000;
+  color: #ffffff;
+  min-height: 80px;
+  padding: 20px;
+  text-align: center;
+  margin-top: 50px !important; /* Pushes the disclaimer safely down below any graphics */
+  clear: both !important;
+}
+
+
+
+/* ==========================================================================
+   3. CONTAINER-FLUID GRID LAYOUT OVERRIDES (LEFT/RIGHT SPLIT)
+   ========================================================================== */
+.container-fluid > .row {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: flex-start !important;
+  gap: 30px !important;
+  padding: 30px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  margin-bottom: 70px !important; /* Prevents content from going under fixed footer */
+}
+
+/* LEFT SIDEBAR (Profile info, Accounts list, and Update Value buttons) */
+.container-fluid .col-sm-6.col-2 {
+  flex: 0 0 360px !important;    /* Forces left sidebar block to stay exactly 360px wide */
+  max-width: 360px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: #ffffff !important;
+  padding: 24px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+}
+
+/* RIGHT MAIN WORKSPACE (Houses Currencies Buttons and Predict Modules) */
+.container-fluid .col-sm-6.col-2 + div,
+.container-fluid .col-sm-6.col-10,
+.container-fluid .text-center {
+  flex: 1 !important; /* Safely consumes remaining right screen space */
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  padding: 0 20px !important;
+  margin: 0 !important;
+}
+
+/* ==========================================================================
+   4. LEFT SIDEBAR COMPONENT BLOCKS (FIXED STRIPPED POSITIONING)
+   ========================================================================== */
+.profile {
+  text-align: left;
   margin-bottom: 20px;
 }
 
-.profile {
-  position: absolute;
-  text-align: left;
-  top: 10px;
-  left: 40px;
+/* Fixed your old tracking classes so they layout cleanly instead of flying around */
+.accounts, .cards {
+  width: 100% !important;
+  position: relative !important; /* Cleared old 'position: fixed' layout bugs */
+  height: auto !important;
+  left: auto !important;
+  top: auto !important;
 }
 
-.cards {
-  width: 260px;
+.cards .card {
+  margin-bottom: 12px !important;
+  border-radius: 8px !important;
 }
-.accounts {
-  position: absolute;
-  text-align: left;
-  margin-bottom: 80px;
+
+/* PROFILE ACTIONS UTILITIES */
+.updateuser, .deleteuser {
+  width: 100%;
+  margin-top: 10px;
 }
+
+.updateuser-button, .deleteuser-button {
+  width: 100% !important;
+  margin: 10px 0 0 0 !important; /* Cleared old 'margin-left: 1050px' layout bug */
+}
+
 .update-user {
   background-color: #0ff0ff;
-  margin-left: 20px;
-  margin-top: 100px;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
 }
 
-.updatevalues {
-  position: absolute;
-  margin-top: 100px;
-  margin-right: 500px;
-  margin-left: 500px;
-  top: 100px;
+/* ==========================================================================
+   5. LIVE COIN PRICING ACTIONS (LEFT COLUMN SLIDER NESTING)
+   ========================================================================== */
+.row.updatevalues-buttons {
+  display: flex !important;
+  flex-direction: column !important; /* Stack vertically to match sidebar column layout */
+  gap: 12px !important;
+  width: 100% !important;
+  margin: 20px 0 0 0 !important;
+  padding: 0 !important;
 }
 
+.row.updatevalues-buttons > div {
+  background: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  border-radius: 8px !important;
+  padding: 15px !important;
+  width: 100% !important;
+}
+
+.updatebitcoin, .updatelitecoin, .updateethereum {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.updatebitcoin-button, .updatelitecoin-button, .updateethereum-button {
+  width: 100% !important;
+  margin-top: 8px !important;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   6. RIGHT WORKSPACE: DYNAMIC TRANSACTION BAR (BUY, SELL, CONVERT)
+   ========================================================================== */
+/* Replaced old relative/right positions with auto-spacing inline flex rules */
+.currencies-buttons {
+  display: flex !important;
+  flex-direction: row !important;      /* Forces buttons to sit side-by-side */
+  justify-content: center !important;  /* Centers them down the center axis */
+  gap: 20px !important;                /* Space buffer BETWEEN buttons */
+  width: 100% !important;
+  max-width: 650px !important;
+  margin: 20px 0 40px 0 !important;
+  padding: 20px !important;
+  background: #ffffff !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+}
+
+.buycurrencies, .sellcurrencies, .convertcurrencies {
+  flex: 1 !important;
+  max-width: 180px !important;
+  position: relative !important;
+  top: auto !important;     /* Cleared old top layout bugs */
+  right: auto !important;   /* Cleared old right layout bugs */
+}
+
+.buycurrencies-button, .sellcurrencies-button, .convertcurrencies-button {
+  width: 100% !important;
+  padding: 10px !important;
+  font-size: 18px !important;
+  border-radius: 5px !important;
+  white-space: nowrap !important;
+}
+
+/* ==========================================================================
+   7. RIGHT WORKSPACE: DYNAMIC COIN PREDICTION SYSTEM PANEL
+   ========================================================================== */
+.predictPrices {
+  background-color: #0ff0ff;
+  background-image: linear-gradient(0deg, transparent 20%, hsla(0,0%,100%,.7), transparent 80%),
+                    linear-gradient(90deg, transparent 20%, hsla(0,0%,100%,.7), transparent 80%);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 1px hsla(0,0%,100%,.8),
+                0 0 0 1px hsla(0,0%,0%,.6),
+                0 2px 3px hsla(0,0%,0%,.6);
+  
+  /* Cleared old hardcoded positioning bugs */
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  
+  width: 100% !important;
+  max-width: 650px !important;
+  padding: 25px !important;
+  margin-top: 20px !important;
+  margin-bottom: 40px !important;
+}
+
+/* ==========================================================================
+   8. POPUP MODALS ENHANCEMENTS
+   ========================================================================== */
+/* ==========================================================================
+   8. MODERNIZED POPUP MODALS ENHANCEMENTS
+   ========================================================================== */
+
+/* The Modal Container Window Overlay */
+.modal,
+[class*="CurrenciesModal"] {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 2500 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  
+
+  font-size: 16px;
+  height: auto !important;
+  width: 90% !important;
+  max-width: 450px !important; /* Perfect window width for transactions */
+  
+  height: auto !important; 
+  max-height: 90vh !important;
+
+  background-color: #ffffff !important; /* Replaced dated lightblue with clean stark white */
+  border-radius: 16px !important; /* Softer, modern premium rounded corners */
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important; /* Soft depth drop shadows */
+  padding: 24px !important;
+  color: #1e293b !important; /* Dark graphite tone text instead of muddy green */
+}
+
+/* Header Bar Styling inside the Modal */
+.modal-header {
+  padding: 0 0 16px 0 !important;
+  background-color: transparent !important; /* Removed neon green header background banner block */
+  color: #0f172a !important; /* Deep dark text color */
+  border-bottom: 1px solid #edf2f7 !important; /* Minimal crisp separating accent wire line */
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.025em;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+/* Style Inputs inside the Modals (Textboxes, Dropdowns, Amount Selectors) */
+.modal input,
+.modal select {
+  width: 100% !important;
+  padding: 10px 14px !important;
+  margin: 12px 0 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 8px !important;
+  background-color: #f8fafc !important;
+  color: #334155 !important;
+  font-size: 15px !important;
+  outline: none !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* Blue focus border style indicator highlight when typing in modal text inputs */
+.modal input:focus,
+.modal select:focus {
+  border-color: #3b82f6 !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Style Text Labels inside the Modals */
+.modal label,
+.modal p,
+.modal span {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #64748b !important; /* Cool dark charcoal grey accent label color */
+  margin-bottom: 4px !important;
+}
+
+/* Action Execution Buttons inside your Modals (The Transaction trigger clicks) */
+.modal button:not(.close) {
+  width: 100% !important;
+  padding: 12px !important;
+  margin-top: 16px !important;
+  border-radius: 8px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease-in-out !important;
+}
+
+/* Close/X Escape Button styling inside your modal layouts */
+.modal button.close,
+.modal-header .close {
+  background: transparent !important;
+  border: none !important;
+  font-size: 24px !important;
+  color: #94a3b8 !important;
+  cursor: pointer !important;
+  padding: 4px !important;
+  line-height: 1 !important;
+}
+
+.modal button.close:hover {
+  color: #64748b !important;
+}
+
+/* Makes all game buttons ease into color changes smoothly instead of snapping */
+.btn, 
+.currencies-buttons button, 
+.row.updatevalues-buttons button {
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* Slightly lifts the button and darkens it on hover */
+.currencies-buttons button:hover, 
+.row.updatevalues-buttons button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  filter: brightness(0.95);
+}
+
+/* Pushes the button down slightly when clicked to feel tactile */
+.currencies-buttons button:active, 
+.row.updatevalues-buttons button:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* Custom formatting for text input boxes inside your prediction console */
+.predictPrices input[type="text"],
+.predictPrices input {
+  padding: 8px 12px !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  color: #0f172a !important;
+  font-size: 14px !important;
+  margin: 5px 0 !important;
+  outline: none !important;
+}
+
+/* Changes border highlight color to deep cyan when typing predictions */
+.predictPrices input:focus {
+  border-color: #00ced1 !important;
+  box-shadow: 0 0 0 3px rgba(0, 206, 209, 0.25) !important;
+}
+
+/* Adds a sleek shadow card effect to your asset tokens display stack */
+.accounts .card {
+  border: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+
+/* Ensure your main rows have breathing space at the base so text doesn't overflow */
+.container-fluid > .row,
+.chart {
+  margin-bottom: 40px !important; /* Cleared old giant 80px+ manual margin blocks */
+}

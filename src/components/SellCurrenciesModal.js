@@ -24,9 +24,9 @@ class SellCurrenciesModal extends Component {
 			method: "PUT",
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
-				Bitcoin: 10703.9675,
-				Litecoin: 220.755,
-				Etherium: 886.96,
+				Bitcoin: 63384.29,
+				Litecoin: 43.34,
+				Ethereum: 1728.06,
 				currency_to_sell: this.state.sell,
 				num_of_units: this.refs.numberOfUnits.value,
 				sold_for: "Cash"
@@ -59,7 +59,7 @@ class SellCurrenciesModal extends Component {
 	             			<br/>
 	             			<input onChange={this.onChangeSellCurrency} type="radio" name="currency" value="Litecoin" className="btn btn-lg btn-block" />Litecoin
 	             			<br/>
-	             			<input onChange={this.onChangeSellCurrency} type="radio" name="currency" value="Etherium" className="btn btn-lg btn-block" />Etherium
+	             			<input onChange={this.onChangeSellCurrency} type="radio" name="currency" value="Ethereum" className="btn btn-lg btn-block" />Ethereum
 	             			</div>
 	             			<div>
 	             			Number of units:  				

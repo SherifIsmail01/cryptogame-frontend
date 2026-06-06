@@ -33,7 +33,7 @@ class ConvertCurrenciesModal extends Component {
 			body: JSON.stringify({
 				Bitcoin: 10703.9675,
 				Litecoin: 220.755,
-				Etherium: 886.96,
+				Ethereum: 886.96,
 				convert_from_currency: this.state.convertFrom,
 				num_of_units_of_converted_from_currency: this.refs.numberOfUnitsOfConvertedFromCurrency.value,
 				convert_to_currency: this.state.convertTo
@@ -71,7 +71,7 @@ class ConvertCurrenciesModal extends Component {
 	             			<br/>
 	             			<input onChange={this.onChangeConvertedFromCurrency} type="radio" name="convertFrom" value="Litecoin" className="btn btn-lg btn-block" />Litecoin
 	             			<br/>
-	             			<input onChange={this.onChangeConvertedFromCurrency} type="radio" name="convertFrom" value="Etherium" className="btn btn-lg btn-block" />Etherium
+	             			<input onChange={this.onChangeConvertedFromCurrency} type="radio" name="convertFrom" value="Ethereum" className="btn btn-lg btn-block" />Ethereum
 	             			</div>
 	             			<div>
 	             			Number of units to convert: 				
@@ -85,7 +85,7 @@ class ConvertCurrenciesModal extends Component {
 				          	<br/>
 	             			<input onChange={this.onChangeConvertedToCurrency} type="radio" name="convertTo" value="Litecoin"  className="btn btn-lg btn-block" />Litecoin
 	             			<br/>
-	             			<input onChange={this.onChangeConvertedToCurrency} type="radio" name="convertTo" value="Etherium"  className="btn btn-lg btn-block" />Etherium
+	             			<input onChange={this.onChangeConvertedToCurrency} type="radio" name="convertTo" value="Ethereum"  className="btn btn-lg btn-block" />Ethereum
 	             			<br/>
 	             			<button type="submit" className="btn btn-success" >Convert</button>
 	             			<button type="button" className="btn btn-danger" onClick= {this.props.close}>Cancel</button>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import UserProfile from './UserProfile';
 
 
@@ -8,14 +9,23 @@ class SignUpModal extends Component {
 		super();
 		this.state = {
 			name: '',
+			password: ''
 		}
 		this.newUser = this.newUser.bind(this);
 		this.onChangeNameInput = this.onChangeNameInput.bind(this);
+		this.onChangePasswordInput = this.onChangePasswordInput.bind(this);
+
 	}
 
 	onChangeNameInput(e) {
 		this.setState({
 			name: e.target.value
+		})
+	}
+
+	onChangePasswordInput(e) {
+		this.setState({
+			password: e.target.value
 		})
 	}
 
@@ -26,12 +36,18 @@ class SignUpModal extends Component {
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({ 
 				name: this.state.name,
+				password: this.state.password
 			})
 			}).then((res) => {
 				return res.json()
-			}).then((user) => {
-				this.props.signUp(user);
-				this.props.myHistory.push("/users/" + user.id)
+			}).then((data) => {
+				// Save details and push into UserProfile.js
+				localStorage.setItem("userId", data.id);
+				localStorage.setItem("userName", data.name);
+				this.props.history.push(`/profile/${data.id}`);
+		}).catch(err => {
+			console.error("Signup frontend catch trigger:", err);
+			alert("Signup failed, Please try a different name");
 		});
 	}
 
@@ -46,6 +62,7 @@ class SignUpModal extends Component {
 	              <div className="modal-body">
 	               		<form onSubmit= {this.newUser} >
 				          <input onChange={this.onChangeNameInput} type="name" value = {this.state.name} placeholder="name" />
+						  <input onChange={this.onChangePasswordInput} type="password" value={this.state.password} placeholder="Create Password"/>
 				          	<br/>
 				          <button type="submit" className="btn btn-success" >Submit</button>
 				          <button type="button" className="btn btn-lg btn-block" onClick={ this.props.close }>Close</button>
@@ -60,4 +77,4 @@ class SignUpModal extends Component {
 	}
 }
 
-export default SignUpModal
+export default withRouter(SignUpModal);
