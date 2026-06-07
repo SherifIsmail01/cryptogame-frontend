@@ -40,6 +40,7 @@ class UserProfile extends Component {
 		this.updateLitecoinValue = this.updateLitecoinValue.bind(this);
 		this.updateEthereumValue = this.updateEthereumValue.bind(this);
 		this.updateCashBalance = this.updateCashBalance.bind(this);
+		this.setUpdatedUser = this.setUpdatedUser.bind(this);
 		this.deleteUser = this.deleteUser.bind(this);
 		this.onChangePredictBitcoin = this.onChangePredictBitcoin.bind(this);
 		this.onChangePredictLitecoin = this.onChangePredictLitecoin.bind(this);
