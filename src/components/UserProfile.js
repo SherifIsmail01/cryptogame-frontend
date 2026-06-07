@@ -238,7 +238,7 @@ class UserProfile extends Component {
 				<div className="row ">
 					<div className="col-sm-6 col-2">
 						<div className="signout">
-							<button onClick={this.handleSignOut} className="btn btn-dark w-100 mt-3">
+							<button onClick={this.handleUserLogOut} className="btn btn-dark w-100 mt-3">
 								Sign Out
 							</button>
 						</div>

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import CryptoChart from './CryptoChart';
+import GlobalGameVolume from './GlobalGameVolume';
 import Users from './Users';
 import SignUpModal from './SignUpModal';
+import SignInModal from './SignInModal';
 import moment from 'moment';
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
@@ -124,6 +126,14 @@ class HomePage extends Component {
 					<p className="disclaimer">
 						{this.state.disclaimer}
 					</p>
+
+				</div>
+
+				<div className="global-game-volume-container" style={{ padding: '20px' }}>
+					<h1>Global Game Dashboard</h1>
+					
+					<GlobalGameVolume />
+
 
 				</div>
 			</div>

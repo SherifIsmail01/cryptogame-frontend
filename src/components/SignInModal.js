@@ -65,8 +65,8 @@ class SignInModal extends Component {
 		return (
 			/* ✅ MANDATORY OVERLAY BACKDROP: Creates the dark transparent blur and captures background click closes */
 			<div className="modal-backdrop-wrapper" style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-					backgroundColor: 'rgba(0, 0, 0, 0.4)', zIndex: 2000, display: 'flex', justifycontent: center,
-					alignItems: center
+					backgroundColor: 'rgba(0, 0, 0, 0.4)', zIndex: 2000, display: 'flex', justifycontent: 'center',
+					alignItems: 'center'
 				}} onClick={this.props.close}>
 				
 				<div className="modal-dialog m-0" role="document" onClick={(e) => e.stopPropagation()} style={{ width: '100%', maxWidth: '450px', zIndex: 2001 }}>
